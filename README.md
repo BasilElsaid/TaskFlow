@@ -7,7 +7,7 @@ Il progetto simula un sistema reale di project management con autenticazione JWT
 
 ## Tech Stack
 
-### Backend
+### Backend (in corso)
 - ASP.NET Core Web API (.NET 8)
 - Entity Framework Core
 - SQL Server
@@ -15,12 +15,12 @@ Il progetto simula un sistema reale di project management con autenticazione JWT
 - JWT Authentication
 - Swagger
 
-### Frontend
+### Frontend (dopo)
 - Angular
 - TypeScript
 - Tailwind CSS
 
-### DevOps
+### DevOps (dopo)
 - Docker (in progress)
 - Docker Compose (planned)
 
