@@ -58,7 +58,16 @@ public class TaskService : ITaskService
 
         if (project == null)
         {
-            throw new Exception("Project not found or not allowed");;
+            throw new Exception("Project not found or not allowed");
+        }
+        
+        if (!string.IsNullOrWhiteSpace(dto.AssignedUserId))
+        {
+            var userExists = _dbContext.Users
+                .Any(u => u.Id == dto.AssignedUserId);
+
+            if (!userExists)
+                throw new Exception("Assigned user not found.");
         }
         
         var task = TaskMapper.ToEntity(dto, userId);
@@ -86,7 +95,7 @@ public class TaskService : ITaskService
         task.TaskStatus = dto.TaskStatus;
         task.TaskPriority = dto.TaskPriority;
         task.DueDate = dto.DueDate;
-        task.AssignedUser = dto.AssignedUserId;
+        task.AssignedUserId = dto.AssignedUserId;
         
         _dbContext.SaveChanges();
         return TaskMapper.ToDto(task);
