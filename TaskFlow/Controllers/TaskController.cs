@@ -19,10 +19,10 @@ public class TaskController : ControllerBase
     }
 
     [HttpGet("projects/{projectId}")]
-    public async Task<IActionResult> GetByProject(int projectId)
+    public async Task<IActionResult> GetByProject(int projectId, [FromQuery] TaskFilterDto filter)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var tasks = await _taskService.GetByProject(projectId, userId);
+        var tasks = await _taskService.GetByProject(projectId, userId, filter);
 
         if (tasks is null)
         {

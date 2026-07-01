@@ -16,22 +16,11 @@ public class TaskService : ITaskService
         _dbContext = dbContext;
     }
     
-    public async Task<List<TaskDto>> GetByProject(int projectId, string userId)
+    public async Task<List<TaskDto>> GetByProject(
+        int projectId, string userId,  TaskFilterDto filter)
     {
-        var projectExists = await _dbContext.Projects
-            .FirstOrDefaultAsync(p => 
-                p.Id == projectId && 
-                p.OwnerId == userId);
-
-        if (projectExists is null)
-        {
-            return null;
-        }
-
-        var tasks = await _dbContext.TaskItems
-            .Where(t => t.ProjectId == projectId)
-            .ToListAsync();
-        
+        var query = BuildQuery(projectId, userId, filter);
+        var tasks = await query.ToListAsync();
         return TaskMapper.ToDtoList(tasks);
     }
 
@@ -109,5 +98,36 @@ public class TaskService : ITaskService
         await _dbContext.SaveChangesAsync();
         
         return true;
+    }
+    
+    private IQueryable<TaskItem> BuildQuery(
+        int projectId,
+        string userId,
+        TaskFilterDto filter)
+    {
+        var query = _dbContext.TaskItems
+            .Where(t =>
+                t.ProjectId == projectId &&
+                t.Project.OwnerId == userId)
+            .AsQueryable();
+
+        if (filter.TaskStatus.HasValue)
+            query = query.Where(t => t.TaskStatus == filter.TaskStatus);
+
+        if (filter.TaskPriority.HasValue)
+            query = query.Where(t => t.TaskPriority == filter.TaskPriority);
+
+        if (filter.AssignedToMe == true)
+            query = query.Where(t => t.AssignedUserId == userId);
+
+        if (filter.DueBefore.HasValue)
+            query = query.Where(t => t.DueDate <= filter.DueBefore);
+
+        if (!string.IsNullOrWhiteSpace(filter.Search))
+            query = query.Where(t =>
+                t.Title.Contains(filter.Search) ||
+                t.Description.Contains(filter.Search));
+
+        return query;
     }
 }
