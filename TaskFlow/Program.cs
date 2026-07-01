@@ -10,6 +10,7 @@ using TaskFlow.Authentication;
 using TaskFlow.Data;
 using TaskFlow.Interfaces;
 using TaskFlow.Models;
+using TaskFlow.Repositories;
 using TaskFlow.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,8 +60,10 @@ builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<ITaskService, TaskService>();

@@ -9,27 +9,25 @@ namespace TaskFlow.Services;
 
 public class TaskService : ITaskService
 {
-    private readonly AppDbContext _dbContext;
+    private readonly ITaskRepository _taskRepo;
+    private readonly IProjectRepository _projectRepo;
     
-    public TaskService(AppDbContext dbContext)
+    public TaskService(ITaskRepository taskRepo, IProjectRepository projectRepo)
     {
-        _dbContext = dbContext;
+        _taskRepo = taskRepo;
+        _projectRepo = projectRepo;
     }
     
     public async Task<List<TaskDto>> GetByProject(
         int projectId, string userId,  TaskFilterDto filter)
     {
-        var query = BuildQuery(projectId, userId, filter);
-        var tasks = await query.ToListAsync();
+        var tasks = await _taskRepo.GetByProjectAsync(projectId, userId, filter);
         return TaskMapper.ToDtoList(tasks);
     }
 
     public async Task<TaskDto?> GetById(int id, string userId)
     {
-        var task = await _dbContext.TaskItems
-            .FirstOrDefaultAsync(t => 
-                t.Id == id && 
-                t.Project.OwnerId == userId);
+        var task = await _taskRepo.GetByIdAsync(id, userId);
 
         if (task == null)
         {
@@ -41,10 +39,7 @@ public class TaskService : ITaskService
 
     public async Task<TaskDto?> Create(CreateTaskDto dto, string userId)
     {
-        var project = await _dbContext.Projects
-            .FirstOrDefaultAsync(p => 
-                p.Id == dto.ProjectId && 
-                p.OwnerId == userId);
+        var project = await _projectRepo.GetByIdAsync(dto.ProjectId, userId);
 
         if (project == null)
         {
@@ -53,18 +48,15 @@ public class TaskService : ITaskService
         
         var task = TaskMapper.ToEntity(dto, userId);
         
-        await _dbContext.TaskItems.AddAsync(task);
-        await _dbContext.SaveChangesAsync();
+        await _taskRepo.AddAsync(task);
+        await _taskRepo.SaveChangesAsync();
         
         return TaskMapper.ToDto(task);
     }
 
     public async Task<TaskDto?> Update(int id, UpdateTaskDto dto, string userId)
     {
-        var task = await _dbContext.TaskItems
-            .FirstOrDefaultAsync(t => 
-                t.Id == id && 
-                t.Project.OwnerId == userId);
+        var task = await _taskRepo.GetByIdAsync(id, userId);
 
         if (task == null)
         {
@@ -78,56 +70,22 @@ public class TaskService : ITaskService
         task.DueDate = dto.DueDate;
         task.AssignedUserId = dto.AssignedUserId;
         
-        await _dbContext.SaveChangesAsync();
+        await _taskRepo.SaveChangesAsync();
         return TaskMapper.ToDto(task);
     }
 
     public async Task<bool> Delete(int id, string userId)
     {
-        var task = await _dbContext.TaskItems
-            .FirstOrDefaultAsync(t => 
-                t.Id == id && 
-                t.Project.OwnerId == userId);
+        var task = await _taskRepo.GetByIdAsync(id, userId);
 
         if (task == null)
         {
             return false;
         }
         
-        _dbContext.TaskItems.Remove(task);
-        await _dbContext.SaveChangesAsync();
+        _taskRepo.Delete(task);
+        await _taskRepo.SaveChangesAsync();
         
         return true;
-    }
-    
-    private IQueryable<TaskItem> BuildQuery(
-        int projectId,
-        string userId,
-        TaskFilterDto filter)
-    {
-        var query = _dbContext.TaskItems
-            .Where(t =>
-                t.ProjectId == projectId &&
-                t.Project.OwnerId == userId)
-            .AsQueryable();
-
-        if (filter.TaskStatus.HasValue)
-            query = query.Where(t => t.TaskStatus == filter.TaskStatus);
-
-        if (filter.TaskPriority.HasValue)
-            query = query.Where(t => t.TaskPriority == filter.TaskPriority);
-
-        if (filter.AssignedToMe == true)
-            query = query.Where(t => t.AssignedUserId == userId);
-
-        if (filter.DueBefore.HasValue)
-            query = query.Where(t => t.DueDate <= filter.DueBefore);
-
-        if (!string.IsNullOrWhiteSpace(filter.Search))
-            query = query.Where(t =>
-                t.Title.Contains(filter.Search) ||
-                t.Description.Contains(filter.Search));
-
-        return query;
     }
 }
