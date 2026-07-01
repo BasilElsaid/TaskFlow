@@ -10,6 +10,7 @@ public class UpdateTaskDto
     [Required]
     [MaxLength(100)]
     public string Title { get; set; } = string.Empty;
+    [Required]
     [MaxLength(500)]
     public string Description { get; set; } = string.Empty;
     

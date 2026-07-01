@@ -20,16 +20,11 @@ public class AuthController : ControllerBase
     [Route("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDto dto)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
         var result = await _authService.RegisterAsync(dto);
 
         if (result == null)
         {
-            return BadRequest();
+            return BadRequest("Registration failed");
         }
         
         return Ok(result);
@@ -39,16 +34,11 @@ public class AuthController : ControllerBase
     [Route("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
         var token = await _authService.LoginAsync(dto);
 
         if (token == null)
         {
-            return  BadRequest();
+            return  BadRequest("Login failed");
         }
         
         return Ok(new { Token = token });

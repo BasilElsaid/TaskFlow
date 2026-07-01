@@ -4,9 +4,9 @@ namespace TaskFlow.Interfaces;
 
 public interface ITaskService
 {
-    List<TaskDto> GetByProject(int projectId, string userId);
-    TaskDto? GetById(int id,  string userId);
-    TaskDto Create(CreateTaskDto dto, string userId);
-    TaskDto? Update(int id, UpdateTaskDto dto, string userId);
-    bool Delete(int id, string userId);
+    Task<List<TaskDto>> GetByProject(int projectId, string userId);
+    Task<TaskDto?> GetById(int id,  string userId);
+    Task<TaskDto?> Create(CreateTaskDto dto, string userId);
+    Task<TaskDto?> Update(int id, UpdateTaskDto dto, string userId);
+    Task<bool> Delete(int id, string userId);
 }

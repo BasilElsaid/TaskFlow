@@ -5,9 +5,9 @@ namespace TaskFlow.Interfaces;
 
 public interface IProjectService
 {
-    List<ProjectDto> GetUserProjects(string userId);
-    ProjectDto? GetById(int projectId, string userId);
-    ProjectDto Create(string userId, string name, string description);
-    ProjectDto Update(int projectId, string name, string description);
-    bool Delete(int projectId, string userId);
+    Task<List<ProjectDto>> GetUserProjects(string userId);
+    Task<ProjectDto?> GetById(int projectId, string userId);
+    Task<ProjectDto?> Create(string userId, CreateProjectDto dto);
+    Task<ProjectDto?> Update(int projectId, UpdateProjectDto dto, string userId);
+    Task<bool> Delete(int projectId, string userId);
 }

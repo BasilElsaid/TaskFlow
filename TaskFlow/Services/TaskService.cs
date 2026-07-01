@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TaskFlow.Data;
 using TaskFlow.Dtos.Task;
 using TaskFlow.Interfaces;
@@ -15,29 +16,29 @@ public class TaskService : ITaskService
         _dbContext = dbContext;
     }
     
-    public List<TaskDto> GetByProject(int projectId, string userId)
+    public async Task<List<TaskDto>> GetByProject(int projectId, string userId)
     {
-        var projectExists = _dbContext.Projects
-            .FirstOrDefault(p => 
+        var projectExists = await _dbContext.Projects
+            .FirstOrDefaultAsync(p => 
                 p.Id == projectId && 
                 p.OwnerId == userId);
 
         if (projectExists is null)
         {
-            return new List<TaskDto>();
+            return null;
         }
 
-        var tasks = _dbContext.TaskItems
+        var tasks = await _dbContext.TaskItems
             .Where(t => t.ProjectId == projectId)
-            .ToList();
+            .ToListAsync();
         
         return TaskMapper.ToDtoList(tasks);
     }
 
-    public TaskDto? GetById(int id, string userId)
+    public async Task<TaskDto?> GetById(int id, string userId)
     {
-        var task = _dbContext.TaskItems
-            .FirstOrDefault(t => 
+        var task = await _dbContext.TaskItems
+            .FirstOrDefaultAsync(t => 
                 t.Id == id && 
                 t.Project.OwnerId == userId);
 
@@ -49,39 +50,30 @@ public class TaskService : ITaskService
         return TaskMapper.ToDto(task);
     }
 
-    public TaskDto Create(CreateTaskDto dto, string userId)
+    public async Task<TaskDto?> Create(CreateTaskDto dto, string userId)
     {
-        var project = _dbContext.Projects
-            .FirstOrDefault(p => 
+        var project = await _dbContext.Projects
+            .FirstOrDefaultAsync(p => 
                 p.Id == dto.ProjectId && 
                 p.OwnerId == userId);
 
         if (project == null)
         {
-            throw new Exception("Project not found or not allowed");
-        }
-        
-        if (!string.IsNullOrWhiteSpace(dto.AssignedUserId))
-        {
-            var userExists = _dbContext.Users
-                .Any(u => u.Id == dto.AssignedUserId);
-
-            if (!userExists)
-                throw new Exception("Assigned user not found.");
+            return null;
         }
         
         var task = TaskMapper.ToEntity(dto, userId);
         
-        _dbContext.TaskItems.Add(task);
-        _dbContext.SaveChanges();
+        await _dbContext.TaskItems.AddAsync(task);
+        await _dbContext.SaveChangesAsync();
         
         return TaskMapper.ToDto(task);
     }
 
-    public TaskDto? Update(int id, UpdateTaskDto dto, string userId)
+    public async Task<TaskDto?> Update(int id, UpdateTaskDto dto, string userId)
     {
-        var task = _dbContext.TaskItems
-            .FirstOrDefault(t => 
+        var task = await _dbContext.TaskItems
+            .FirstOrDefaultAsync(t => 
                 t.Id == id && 
                 t.Project.OwnerId == userId);
 
@@ -97,14 +89,14 @@ public class TaskService : ITaskService
         task.DueDate = dto.DueDate;
         task.AssignedUserId = dto.AssignedUserId;
         
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
         return TaskMapper.ToDto(task);
     }
 
-    public bool Delete(int id, string userId)
+    public async Task<bool> Delete(int id, string userId)
     {
-        var task = _dbContext.TaskItems
-            .FirstOrDefault(t => 
+        var task = await _dbContext.TaskItems
+            .FirstOrDefaultAsync(t => 
                 t.Id == id && 
                 t.Project.OwnerId == userId);
 
@@ -113,8 +105,8 @@ public class TaskService : ITaskService
             return false;
         }
         
-        _dbContext.Remove(task);
-        _dbContext.SaveChanges();
+        _dbContext.TaskItems.Remove(task);
+        await _dbContext.SaveChangesAsync();
         
         return true;
     }

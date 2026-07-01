@@ -20,46 +20,61 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetUserProjects()
+    public async Task<IActionResult> GetUserProjects()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var projects = _projectService.GetUserProjects(userId!);
+        var projects = await _projectService.GetUserProjects(userId!);
         return Ok(projects);
     }
     
     [HttpGet("{id}")]
-    public IActionResult GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var project = _projectService.GetById(id, userId!);
+        var project = await _projectService.GetById(id, userId!);
 
         if (project == null)
         {
-            return NotFound();
+            return NotFound("Project not found");
         }
         
         return Ok(project);
     }
 
     [HttpPost]
-    public IActionResult CreateProject([FromBody] CreateProjectDto dto)
+    public async Task<IActionResult> CreateProject([FromBody] CreateProjectDto dto)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var project = _projectService.Create(userId!, dto.Name, dto.Description);
+        var project = await _projectService.Create(userId!, dto);
+        
+        return CreatedAtAction(nameof(GetById), new { id = project!.Id }, project);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateProjectDto dto)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var project = await _projectService.Update(id, dto, userId!);
+
+        if (project == null)
+        {
+            return NotFound("Project not found");
+        }
+        
         return Ok(project);
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteProject(int id)
+    public async Task<IActionResult> DeleteProject(int id)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var result = _projectService.Delete(id, userId!);
+        var result = await _projectService.Delete(id, userId!);
 
         if (!result)
         {
-            return NotFound();
+            return NotFound("Project not found");
         }
         
-        return Ok();
+        return NoContent();
     }
 }

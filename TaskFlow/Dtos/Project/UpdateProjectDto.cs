@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TaskFlow.Dtos.Project;
 
-public class CreateProjectDto
+public class UpdateProjectDto
 {
     [Required]
     [MaxLength(50)]

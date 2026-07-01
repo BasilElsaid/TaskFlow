@@ -19,60 +19,71 @@ public class TaskController : ControllerBase
     }
 
     [HttpGet("projects/{projectId}")]
-    public IActionResult GetByProject(int projectId)
+    public async Task<IActionResult> GetByProject(int projectId)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var tasks = _taskService.GetByProject(projectId, userId);
+        var tasks = await _taskService.GetByProject(projectId, userId);
+
+        if (tasks is null)
+        {
+            return NotFound("Project or Tasks not found");
+        }
         return Ok(tasks);
     }
     
     [HttpGet("{id}")]
-    public IActionResult GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var task = _taskService.GetById(id, userId);
+        var task = await _taskService.GetById(id, userId);
 
         if (task is null)
         {
-            return NotFound();
+            return NotFound("Task not found");
         }
         
         return Ok(task);
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] CreateTaskDto dto)
+    public async Task<IActionResult> Create([FromBody] CreateTaskDto dto)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var task = _taskService.Create(dto, userId);
-        return Ok(task);
-    }
-
-    [HttpPut("{id}")]
-    public IActionResult Update(int id, [FromBody] UpdateTaskDto dto)
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var task = _taskService.Update(id, dto, userId);
+        var task = await _taskService.Create(dto, userId!);
 
         if (task is null)
         {
-            return NotFound();
+            return BadRequest("Project not found");
+        }
+        
+        return CreatedAtAction(nameof(GetById), new { id = task.Id }, task);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateTaskDto dto)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var task = await _taskService.Update(id, dto, userId);
+
+        if (task is null)
+        {
+            return NotFound("Task not found");
         }
         
         return Ok(task);
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var result = _taskService.Delete(id, userId);
+        var result = await _taskService.Delete(id, userId);
 
         if (!result)
         {
-            return NotFound();
+            return NotFound("Task not found");
         }
-        
-        return Ok(result);
+
+        return NoContent();
     }
 }

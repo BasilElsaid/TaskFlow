@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TaskFlow.Data;
 using TaskFlow.Dtos.Project;
 using TaskFlow.Interfaces;
@@ -15,19 +16,21 @@ public class ProjectService : IProjectService
         _dbContext = dbContext;
     }
     
-    public List<ProjectDto> GetUserProjects(string userId)
+    public async Task<List<ProjectDto>> GetUserProjects(string userId)
     {
-        var projects = _dbContext.Projects
+        var projects = await _dbContext.Projects
             .Where(p => p.OwnerId == userId)
-            .ToList();
+            .ToListAsync();
         
         return ProjectMapper.ToDtoList(projects);
     }
 
-    public ProjectDto? GetById(int projectId, string userId)
+    public async Task<ProjectDto?> GetById(int projectId, string userId)
     {
-        var project = _dbContext.Projects
-            .FirstOrDefault(p => p.Id == projectId && p.OwnerId == userId);
+        var project = await _dbContext.Projects
+            .FirstOrDefaultAsync(p => 
+                p.Id == projectId && 
+                p.OwnerId == userId);
 
         if (project == null)
         {
@@ -37,39 +40,51 @@ public class ProjectService : IProjectService
         return ProjectMapper.ToDto(project);
     }
 
-    public ProjectDto Create(string userId, string name, string description)
+    public async Task<ProjectDto?> Create(string userId, CreateProjectDto dto)
     {
         var project = new Project
         {
-            Name = name,
-            Description = description,
+            Name = dto.Name,
+            Description = dto.Description,
             OwnerId = userId,
             CreatedAt = DateTime.UtcNow
         };
         
-        _dbContext.Projects.Add(project);
-        _dbContext.SaveChanges();
+        await _dbContext.Projects.AddAsync(project);
+        await _dbContext.SaveChangesAsync();
         
         return ProjectMapper.ToDto(project);
     }
 
-    public ProjectDto Update(int projectId, string name, string description)
+    public async Task<ProjectDto?> Update(int projectId, UpdateProjectDto dto, string userId)
     {
-        throw new NotImplementedException();
+        var project = await _dbContext.Projects
+            .FirstOrDefaultAsync(p => p.Id == projectId && p.OwnerId == userId);
+
+        if (project == null)
+        {
+            return null;
+        }
+        
+        project.Name = dto.Name;
+        project.Description = dto.Description;
+        
+        await _dbContext.SaveChangesAsync();
+        return ProjectMapper.ToDto(project);
     }
 
-    public bool Delete(int projectId, string userId)
+    public async Task<bool> Delete(int projectId, string userId)
     {
-        var project = _dbContext.Projects
-            .FirstOrDefault(p => p.Id == projectId && p.OwnerId == userId);
+        var project = await _dbContext.Projects
+            .FirstOrDefaultAsync(p => p.Id == projectId && p.OwnerId == userId);
 
         if (project == null)
         {
             return false;
         }
 
-        _dbContext.Remove(project);
-        _dbContext.SaveChanges();
+        _dbContext.Projects.Remove(project);
+        await _dbContext.SaveChangesAsync();
         
         return true;
     }

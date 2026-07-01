@@ -1,7 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.VisualBasic;
 using TaskFlow.Enums;
-using TaskStatus = System.Threading.Tasks.TaskStatus;
 
 namespace TaskFlow.Dtos.Task;
 
@@ -10,6 +8,7 @@ public class CreateTaskDto
     [Required]
     [MaxLength(100)]
     public string Title { get; set; } = string.Empty;
+    [Required]
     [MaxLength(500)]
     public string Description { get; set; } = string.Empty;
     
