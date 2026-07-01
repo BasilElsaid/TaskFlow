@@ -106,12 +106,4 @@ Sistema basato su **ASP.NET Core Identity + JWT**
 - Pagination
 - Dashboard stats
 
----
-
-## API Documentation
-
-Swagger disponibile in development:
-
-https://localhost:{port}/swagger
-
----
+...
