@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace TaskFlow.Dtos.Auth;
+namespace TaskFlow.Dtos.Requests.Auth;
 
-public class RegisterDto
+public class RegisterRequest
 {
     [Required]
     public string FirstName { get; set; } = string.Empty;

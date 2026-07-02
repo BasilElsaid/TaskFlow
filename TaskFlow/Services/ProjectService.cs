@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TaskFlow.Data;
-using TaskFlow.Dtos.Project;
+using TaskFlow.Dtos.Requests.Project;
+using TaskFlow.Dtos.Responses.Project;
 using TaskFlow.Interfaces;
 using TaskFlow.Mappers;
 using TaskFlow.Models;
@@ -16,13 +17,13 @@ public class ProjectService : IProjectService
         _projectRepo = projectRepo;
     }
     
-    public async Task<List<ProjectDto>> GetUserProjects(string userId)
+    public async Task<List<ProjectResponse>> GetUserProjects(string userId)
     {
         var projects = await _projectRepo.GetByUserAsync(userId);
-        return ProjectMapper.ToDtoList(projects);
+        return ProjectMapper.ToResponseList(projects);
     }
 
-    public async Task<ProjectDto?> GetById(int projectId, string userId)
+    public async Task<ProjectResponse?> GetById(int projectId, string userId)
     {
         var project = await _projectRepo.GetByIdAsync(projectId, userId);
 
@@ -31,15 +32,15 @@ public class ProjectService : IProjectService
             return null;
         }
         
-        return ProjectMapper.ToDto(project);
+        return ProjectMapper.ToResponse(project);
     }
 
-    public async Task<ProjectDto?> Create(string userId, CreateProjectDto dto)
+    public async Task<ProjectResponse?> Create(string userId, CreateProjectRequest request)
     {
         var project = new Project
         {
-            Name = dto.Name,
-            Description = dto.Description,
+            Name = request.Name,
+            Description = request.Description,
             OwnerId = userId,
             CreatedAt = DateTime.UtcNow
         };
@@ -47,10 +48,10 @@ public class ProjectService : IProjectService
         await _projectRepo.AddAsync(project);
         await _projectRepo.SaveChangesAsync();
         
-        return ProjectMapper.ToDto(project);
+        return ProjectMapper.ToResponse(project);
     }
 
-    public async Task<ProjectDto?> Update(int projectId, UpdateProjectDto dto, string userId)
+    public async Task<ProjectResponse?> Update(int projectId, UpdateProjectRequest request, string userId)
     {
         var project = await _projectRepo.GetByIdAsync(projectId, userId);
         if (project == null)
@@ -58,11 +59,11 @@ public class ProjectService : IProjectService
             return null;
         }
         
-        project.Name = dto.Name;
-        project.Description = dto.Description;
+        project.Name = request.Name;
+        project.Description = request.Description;
         
         await _projectRepo.SaveChangesAsync();
-        return ProjectMapper.ToDto(project);
+        return ProjectMapper.ToResponse(project);
     }
 
     public async Task<bool> Delete(int projectId, string userId)

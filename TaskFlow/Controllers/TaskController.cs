@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TaskFlow.Dtos.Task;
+using TaskFlow.Dtos.Requests.Task;
 using TaskFlow.Interfaces;
 
 namespace TaskFlow.Controllers;
@@ -19,7 +19,7 @@ public class TaskController : ControllerBase
     }
 
     [HttpGet("projects/{projectId}")]
-    public async Task<IActionResult> GetByProject(int projectId, [FromQuery] TaskFilterDto filter)
+    public async Task<IActionResult> GetByProject(int projectId, [FromQuery] TaskFilterRequest filter)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var tasks = await _taskService.GetByProject(projectId, userId, filter);
@@ -46,10 +46,10 @@ public class TaskController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateTaskDto dto)
+    public async Task<IActionResult> Create([FromBody] CreateTaskRequest request)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var task = await _taskService.Create(dto, userId!);
+        var task = await _taskService.Create(request, userId!);
 
         if (task is null)
         {
@@ -60,10 +60,10 @@ public class TaskController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] UpdateTaskDto dto)
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateTaskRequest request)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var task = await _taskService.Update(id, dto, userId);
+        var task = await _taskService.Update(id, request, userId);
 
         if (task is null)
         {

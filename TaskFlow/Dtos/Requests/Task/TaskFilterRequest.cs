@@ -1,9 +1,9 @@
 using TaskFlow.Enums;
 using TaskStatus = TaskFlow.Enums.TaskStatus;
 
-namespace TaskFlow.Dtos.Task;
+namespace TaskFlow.Dtos.Requests.Task;
 
-public class TaskFilterDto
+public class TaskFilterRequest
 {
     public TaskStatus? TaskStatus { get; set; }
     public TaskPriority? TaskPriority { get; set; }

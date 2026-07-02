@@ -1,20 +1,22 @@
+using System.ComponentModel.DataAnnotations;
 using TaskFlow.Enums;
 using TaskStatus = TaskFlow.Enums.TaskStatus;
 
-namespace TaskFlow.Dtos.Task;
+namespace TaskFlow.Dtos.Requests.Task;
 
-public class TaskDto
+public class UpdateTaskRequest
 {
-    public int Id { get; set; }
+    [Required]
+    [MaxLength(100)]
     public string Title { get; set; } = string.Empty;
+    [Required]
+    [MaxLength(500)]
     public string Description { get; set; } = string.Empty;
     
     public TaskStatus TaskStatus { get; set; }
     public TaskPriority TaskPriority { get; set; }
     
-    public DateTime? DueTime { get; set; }
-    public DateTime? CreatedAt { get; set; }
+    public DateTime? DueDate { get; set; }
     
-    public int ProjectId { get; set; }
     public string? AssignedUserId { get; set; }
 }

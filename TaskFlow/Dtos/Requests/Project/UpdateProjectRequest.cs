@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace TaskFlow.Dtos.Project;
+namespace TaskFlow.Dtos.Requests.Project;
 
-public class CreateProjectDto
+public class UpdateProjectRequest
 {
     [Required]
     [MaxLength(50)]

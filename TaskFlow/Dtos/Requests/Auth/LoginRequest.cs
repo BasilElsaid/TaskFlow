@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace TaskFlow.Dtos.Auth;
+namespace TaskFlow.Dtos.Requests.Auth;
 
-public class LoginDto
+public class LoginRequest
 {
     [Required]
     [EmailAddress]

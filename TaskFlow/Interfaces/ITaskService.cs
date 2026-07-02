@@ -1,12 +1,14 @@
-using TaskFlow.Dtos.Task;
+using TaskFlow.Dtos.Requests.Task;
+using TaskFlow.Dtos.Responses.Project;
+using TaskFlow.Dtos.Responses.Task;
 
 namespace TaskFlow.Interfaces;
 
 public interface ITaskService
 {
-    Task<List<TaskDto>> GetByProject(int projectId, string userId, TaskFilterDto filter);
-    Task<TaskDto?> GetById(int id,  string userId);
-    Task<TaskDto?> Create(CreateTaskDto dto, string userId);
-    Task<TaskDto?> Update(int id, UpdateTaskDto dto, string userId);
+    Task<List<TaskResponse>> GetByProject(int projectId, string userId, TaskFilterRequest filter);
+    Task<TaskResponse?> GetById(int id,  string userId);
+    Task<TaskResponse?> Create(CreateTaskRequest request, string userId);
+    Task<TaskResponse?> Update(int id, UpdateTaskRequest request, string userId);
     Task<bool> Delete(int id, string userId);
 }

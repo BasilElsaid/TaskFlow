@@ -1,4 +1,5 @@
-using TaskFlow.Dtos.Project;
+using TaskFlow.Dtos.Requests.Project;
+using TaskFlow.Dtos.Responses.Project;
 using TaskFlow.Models;
 
 namespace TaskFlow.Mappers;
@@ -6,9 +7,9 @@ namespace TaskFlow.Mappers;
 public static class ProjectMapper
 
 {
-    public static ProjectDto ToDto(Project project)
+    public static ProjectResponse ToResponse(Project project)
     {
-        return new ProjectDto
+        return new ProjectResponse
         {
             Id = project.Id,
             Name = project.Name,
@@ -17,17 +18,17 @@ public static class ProjectMapper
         };
     }
 
-    public static List<ProjectDto> ToDtoList(List<Project> projects)
+    public static List<ProjectResponse> ToResponseList(List<Project> projects)
     {
-        return projects.Select(ToDto).ToList();
+        return projects.Select(ToResponse).ToList();
     }
 
-    public static Project ToEntity(CreateProjectDto dto, string userId)
+    public static Project ToEntity(CreateProjectRequest request, string userId)
     {
         return new Project
         {
-            Name = dto.Name,
-            Description = dto.Description,
+            Name = request.Name,
+            Description = request.Description,
             OwnerId = userId,
             CreatedAt = DateTime.UtcNow
         };

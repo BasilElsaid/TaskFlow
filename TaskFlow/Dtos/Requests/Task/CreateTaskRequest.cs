@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using TaskFlow.Enums;
 
-namespace TaskFlow.Dtos.Task;
+namespace TaskFlow.Dtos.Requests.Task;
 
-public class CreateTaskDto
+public class CreateTaskRequest
 {
     [Required]
     [MaxLength(100)]

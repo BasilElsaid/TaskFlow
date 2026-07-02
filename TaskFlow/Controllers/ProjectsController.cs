@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TaskFlow.Dtos.Project;
+using TaskFlow.Dtos.Requests.Project;
 using TaskFlow.Interfaces;
 using TaskFlow.Models;
 
@@ -42,19 +42,19 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateProject([FromBody] CreateProjectDto dto)
+    public async Task<IActionResult> CreateProject([FromBody] CreateProjectRequest request)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var project = await _projectService.Create(userId!, dto);
+        var project = await _projectService.Create(userId!, request);
         
         return CreatedAtAction(nameof(GetById), new { id = project!.Id }, project);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] UpdateProjectDto dto)
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateProjectRequest request)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var project = await _projectService.Update(id, dto, userId!);
+        var project = await _projectService.Update(id, request, userId!);
 
         if (project == null)
         {

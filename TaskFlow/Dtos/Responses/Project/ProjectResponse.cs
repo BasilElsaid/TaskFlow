@@ -1,6 +1,6 @@
-namespace TaskFlow.Dtos.Project;
+namespace TaskFlow.Dtos.Responses.Project;
 
-public class ProjectDto
+public class ProjectResponse
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;

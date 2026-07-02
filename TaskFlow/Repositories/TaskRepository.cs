@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TaskFlow.Data;
-using TaskFlow.Dtos.Task;
+using TaskFlow.Dtos.Requests.Task;
 using TaskFlow.Interfaces;
 using TaskFlow.Models;
 
@@ -17,7 +17,7 @@ public class TaskRepository : ITaskRepository
     }
 
 
-    public async Task<List<TaskItem>> GetByProjectAsync(int projectId, string userId, TaskFilterDto filter)
+    public async Task<List<TaskItem>> GetByProjectAsync(int projectId, string userId, TaskFilterRequest filter)
     {
         var query = _dbContext.TaskItems
             .Where(t => t.ProjectId == projectId && t.Project.OwnerId == userId);

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
-using TaskFlow.Dtos.Auth;
+using TaskFlow.Dtos.Requests.Auth;
+using TaskFlow.Dtos.Responses.Auth;
 using TaskFlow.Interfaces;
 using TaskFlow.Models;
 
@@ -16,25 +17,25 @@ public class AuthService : IAuthService
         _tokenService = tokenService;
     }
     
-    public async Task<UserDto?> RegisterAsync(RegisterDto dto)
+    public async Task<UserResponse?> RegisterAsync(RegisterRequest request)
     {
         var user = new User
 
         {
-            UserName = dto.Email,
-            Email = dto.Email,
-            FirstName = dto.FirstName,
-            LastName = dto.LastName
+            UserName = request.Email,
+            Email = request.Email,
+            FirstName = request.FirstName,
+            LastName = request.LastName
         };
 
-        var result = await _userManager.CreateAsync(user, dto.Password);
+        var result = await _userManager.CreateAsync(user, request.Password);
 
         if (!result.Succeeded)
         {
             return null;
         }
 
-        return new UserDto
+        return new UserResponse
         {
             Id = user.Id,
             Email = user.Email!,
@@ -43,14 +44,14 @@ public class AuthService : IAuthService
         };
     }
 
-    public async Task<string?> LoginAsync(LoginDto dto)
+    public async Task<string?> LoginAsync(LoginRequest request)
     {
-        var user = await _userManager.FindByEmailAsync(dto.Email);
+        var user = await _userManager.FindByEmailAsync(request.Email);
 
         if (user == null)
             return null;
 
-        var isValid = await _userManager.CheckPasswordAsync(user, dto.Password);
+        var isValid = await _userManager.CheckPasswordAsync(user, request.Password);
 
         if (!isValid)
             return null;

@@ -1,41 +1,42 @@
-using TaskFlow.Dtos.Task;
+using TaskFlow.Dtos.Requests.Task;
+using TaskFlow.Dtos.Responses.Task;
 using TaskFlow.Models;
 
 namespace TaskFlow.Mappers;
 
 public static class TaskMapper
 {
-    public static TaskDto ToDto(TaskItem task)
+    public static TaskResponse ToResponse(TaskItem task)
     {
-        return new TaskDto
+        return new TaskResponse
         {
             Id = task.Id,
             Title = task.Title,
             Description = task.Description,
             TaskStatus = task.TaskStatus,
             TaskPriority = task.TaskPriority,
-            DueTime = task.DueDate,
+            DueDate = task.DueDate,
             CreatedAt = task.CreatedAt,
             ProjectId = task.ProjectId,
             AssignedUserId = task.AssignedUserId,
         };
     }
 
-    public static List<TaskDto> ToDtoList(List<TaskItem> tasks)
+    public static List<TaskResponse> ToResponseList(List<TaskItem> tasks)
     {
-        return tasks.Select(ToDto).ToList();
+        return tasks.Select(ToResponse).ToList();
     }
 
-    public static TaskItem ToEntity(CreateTaskDto dto, string userId)
+    public static TaskItem ToEntity(CreateTaskRequest request)
     {
         return new TaskItem
         {
-            Title = dto.Title,
-            Description = dto.Description ?? string.Empty,
-            TaskPriority = dto.TaskPriority,
+            Title = request.Title,
+            Description = request.Description ?? string.Empty,
+            TaskPriority = request.TaskPriority,
             CreatedAt = DateTime.UtcNow,
-            ProjectId = dto.ProjectId,
-            AssignedUserId = dto.AssignedUserId,
+            ProjectId = request.ProjectId,
+            AssignedUserId = request.AssignedUserId,
             TaskStatus = Enums.TaskStatus.Todo,
         };
     }

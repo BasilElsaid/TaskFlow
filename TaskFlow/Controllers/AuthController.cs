@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using TaskFlow.Dtos.Auth;
+using TaskFlow.Dtos.Requests.Auth;
 using TaskFlow.Interfaces;
 
 namespace TaskFlow.Controllers;
@@ -18,9 +18,9 @@ public class AuthController : ControllerBase
     
     [HttpPost]
     [Route("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterDto dto)
+    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        var result = await _authService.RegisterAsync(dto);
+        var result = await _authService.RegisterAsync(request);
 
         if (result == null)
         {
@@ -32,9 +32,9 @@ public class AuthController : ControllerBase
 
     [HttpPost]
     [Route("login")]
-    public async Task<IActionResult> Login([FromBody] LoginDto dto)
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var token = await _authService.LoginAsync(dto);
+        var token = await _authService.LoginAsync(request);
 
         if (token == null)
         {

@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using TaskFlow.Data;
-using TaskFlow.Dtos.Task;
+using TaskFlow.Dtos.Requests.Task;
+using TaskFlow.Dtos.Responses.Project;
+using TaskFlow.Dtos.Responses.Task;
 using TaskFlow.Interfaces;
 using TaskFlow.Mappers;
 using TaskFlow.Models;
@@ -18,14 +20,14 @@ public class TaskService : ITaskService
         _projectRepo = projectRepo;
     }
     
-    public async Task<List<TaskDto>> GetByProject(
-        int projectId, string userId,  TaskFilterDto filter)
+    public async Task<List<TaskResponse>> GetByProject(
+        int projectId, string userId,  TaskFilterRequest filter)
     {
         var tasks = await _taskRepo.GetByProjectAsync(projectId, userId, filter);
-        return TaskMapper.ToDtoList(tasks);
+        return TaskMapper.ToResponseList(tasks);
     }
 
-    public async Task<TaskDto?> GetById(int id, string userId)
+    public async Task<TaskResponse?> GetById(int id, string userId)
     {
         var task = await _taskRepo.GetByIdAsync(id, userId);
 
@@ -34,27 +36,27 @@ public class TaskService : ITaskService
             return null;
         }
         
-        return TaskMapper.ToDto(task);
+        return TaskMapper.ToResponse(task);
     }
 
-    public async Task<TaskDto?> Create(CreateTaskDto dto, string userId)
+    public async Task<TaskResponse?> Create(CreateTaskRequest request, string userId)
     {
-        var project = await _projectRepo.GetByIdAsync(dto.ProjectId, userId);
+        var project = await _projectRepo.GetByIdAsync(request.ProjectId, userId);
 
         if (project == null)
         {
             return null;
         }
         
-        var task = TaskMapper.ToEntity(dto, userId);
+        var task = TaskMapper.ToEntity(request);
         
         await _taskRepo.AddAsync(task);
         await _taskRepo.SaveChangesAsync();
         
-        return TaskMapper.ToDto(task);
+        return TaskMapper.ToResponse(task);
     }
 
-    public async Task<TaskDto?> Update(int id, UpdateTaskDto dto, string userId)
+    public async Task<TaskResponse?> Update(int id, UpdateTaskRequest request, string userId)
     {
         var task = await _taskRepo.GetByIdAsync(id, userId);
 
@@ -63,15 +65,15 @@ public class TaskService : ITaskService
             return null;
         }
         
-        task.Title = dto.Title;
-        task.Description = dto.Description;
-        task.TaskStatus = dto.TaskStatus;
-        task.TaskPriority = dto.TaskPriority;
-        task.DueDate = dto.DueDate;
-        task.AssignedUserId = dto.AssignedUserId;
+        task.Title = request.Title;
+        task.Description = request.Description;
+        task.TaskStatus = request.TaskStatus;
+        task.TaskPriority = request.TaskPriority;
+        task.DueDate = request.DueDate;
+        task.AssignedUserId = request.AssignedUserId;
         
         await _taskRepo.SaveChangesAsync();
-        return TaskMapper.ToDto(task);
+        return TaskMapper.ToResponse(task);
     }
 
     public async Task<bool> Delete(int id, string userId)
