@@ -5,3 +5,11 @@ appsettings.Development.json
 *.suo
 .vs/
 .DS_Store
+
+node_modules/
+
+dist/
+
+.angular/
+
+coverage/
