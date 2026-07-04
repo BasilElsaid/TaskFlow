@@ -20,10 +20,6 @@ Il progetto simula un sistema reale di project management con autenticazione JWT
 - TypeScript
 - Tailwind CSS
 
-### DevOps (dopo)
-- Docker (in progress)
-- Docker Compose (planned)
-
 ---
 
 ## Architettura
