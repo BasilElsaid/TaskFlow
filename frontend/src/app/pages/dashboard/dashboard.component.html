@@ -1,0 +1,144 @@
+<div class="max-w-7xl mx-auto px-6 py-10">
+  <!-- Header -->
+  <div
+    class="flex flex-col md:flex-row md:items-center md:justify-between gap-6"
+  >
+    <div>
+      <h1 class="text-3xl font-semibold">Benvenuto!</h1>
+
+      <p class="text-gray-500 mt-2">
+        Ecco una panoramica dei tuoi progetti e delle attività.
+      </p>
+    </div>
+
+    <button
+      class="bg-black text-white px-5 py-3 rounded-lg hover:bg-gray-800 transition"
+    >
+      + Nuovo progetto
+    </button>
+  </div>
+
+  <!-- Statistiche -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+    <div class="bg-white border rounded-xl p-6">
+      <p class="text-gray-500 text-sm">Progetti</p>
+      <h2 class="text-3xl font-semibold mt-2">5</h2>
+    </div>
+
+    <div class="bg-white border rounded-xl p-6">
+      <p class="text-gray-500 text-sm">Task totali</p>
+      <h2 class="text-3xl font-semibold mt-2">32</h2>
+    </div>
+
+    <div class="bg-white border rounded-xl p-6">
+      <p class="text-gray-500 text-sm">Completate</p>
+      <h2 class="text-3xl font-semibold mt-2">18</h2>
+    </div>
+
+    <div class="bg-white border rounded-xl p-6">
+      <p class="text-gray-500 text-sm">In scadenza</p>
+      <h2 class="text-3xl font-semibold mt-2">4</h2>
+    </div>
+  </div>
+
+  <!-- I tuoi progetti -->
+  <div class="mt-14">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-semibold">I tuoi progetti</h2>
+
+      <a routerLink="/projects" class="text-sm text-black hover:underline">
+        Vedi tutti
+      </a>
+    </div>
+
+    <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <!-- Card -->
+      <div class="bg-white border rounded-xl p-6 hover:shadow-md transition">
+        <div class="flex justify-between items-center">
+          <h3 class="font-semibold text-lg">Restyling sito</h3>
+
+          <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">
+            Attivo
+          </span>
+        </div>
+
+        <p class="text-gray-500 mt-3 text-sm">
+          Nuova interfaccia utente e miglioramento UX.
+        </p>
+
+        <div class="mt-6 flex justify-between text-sm text-gray-500">
+          <span>12 Task</span>
+
+          <span>75%</span>
+        </div>
+      </div>
+
+      <!-- Card -->
+      <div class="bg-white border rounded-xl p-6 hover:shadow-md transition">
+        <div class="flex justify-between items-center">
+          <h3 class="font-semibold text-lg">Backend API</h3>
+
+          <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">
+            Attivo
+          </span>
+        </div>
+
+        <p class="text-gray-500 mt-3 text-sm">
+          Repository Pattern e autenticazione JWT.
+        </p>
+
+        <div class="mt-6 flex justify-between text-sm text-gray-500">
+          <span>8 Task</span>
+
+          <span>45%</span>
+        </div>
+      </div>
+
+      <!-- Card -->
+      <div class="bg-white border rounded-xl p-6 hover:shadow-md transition">
+        <div class="flex justify-between items-center">
+          <h3 class="font-semibold text-lg">Mobile App</h3>
+
+          <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">
+            Pianificazione
+          </span>
+        </div>
+
+        <p class="text-gray-500 mt-3 text-sm">
+          Definizione dell'architettura e della UI.
+        </p>
+
+        <div class="mt-6 flex justify-between text-sm text-gray-500">
+          <span>5 Task</span>
+
+          <span>10%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Attività recenti -->
+  <div class="mt-14">
+    <h2 class="text-2xl font-semibold mb-6">Attività recenti</h2>
+
+    <div class="bg-white border rounded-xl divide-y">
+      <div class="p-5 flex justify-between">
+        <span>Hai completato "Configurare JWT"</span>
+
+        <span class="text-gray-400 text-sm">2 ore fa</span>
+      </div>
+
+      <div class="p-5 flex justify-between">
+        <span>Creato il progetto "Frontend Angular"</span>
+
+        <span class="text-gray-400 text-sm">Ieri</span>
+      </div>
+
+      <div class="p-5 flex justify-between">
+        <span>Nuova task "Creare Dashboard"</span>
+
+        <span class="text-gray-400 text-sm">2 giorni fa</span>
+      </div>
+    </div>
+  </div>
+</div>

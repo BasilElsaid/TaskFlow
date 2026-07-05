@@ -3,11 +3,11 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'app-register',
   imports: [RouterModule, CommonModule],
-  templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.css'
 })
-export class NavbarComponent {
+export class RegisterComponent {
 
 }
