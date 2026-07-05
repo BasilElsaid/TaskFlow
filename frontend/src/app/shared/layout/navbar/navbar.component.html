@@ -4,13 +4,31 @@
 
     <div class="flex items-center gap-6 text-sm text-gray-600">
       <a routerLink="/" class="hover:text-black">Home</a>
-      <a routerLink="/projects" class="hover:text-black">Projects</a>
-      <a
-        routerLink="/auth/login"
-        class="px-4 py-1 rounded-md bg-black text-white hover:bg-gray-800"
-      >
-        Login
-      </a>
+      <a routerLink="/dashboard" class="hover:text-black">Dashboard</a>
+      <!-- LOGGED OUT -->
+
+      <ng-container *ngIf="!(isLoggedIn$ | async)">
+        <a routerLink="/auth/register" class="text-gray-600 hover:text-black">
+          Register
+        </a>
+        <a
+          routerLink="/auth/login"
+          class="px-4 py-1 rounded-md bg-black text-white hover:bg-gray-800"
+        >
+          Login
+        </a>
+      </ng-container>
+
+      <!-- LOGGED IN -->
+
+      <ng-container *ngIf="isLoggedIn$ | async">
+        <button
+          (click)="logout()"
+          class="px-4 py-1 rounded-md bg-black text-white hover:bg-gray-800"
+        >
+          Logout
+        </button>
+      </ng-container>
     </div>
   </div>
 </nav>
