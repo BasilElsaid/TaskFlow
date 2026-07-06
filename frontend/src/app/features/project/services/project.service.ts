@@ -1,9 +1,10 @@
 import { Injectable, inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { CreateProjectRequest } from "../models/project/create-project-request";
-import { Project } from "../models/project/project";
-import { UpdateProjectRequest } from "../models/project/update-project-request";
+import { CreateProjectRequest } from "../models/create-project-request";
+import { Project } from "../models/project";
+import { UpdateProjectRequest } from "../models/update-project-request";
+
 
 
 @Injectable({

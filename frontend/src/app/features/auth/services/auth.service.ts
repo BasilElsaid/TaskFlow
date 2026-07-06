@@ -1,10 +1,11 @@
 import { Injectable, inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, map, Observable, tap } from "rxjs";
-import { LoginRequest } from "../models/auth/login-request";
-import { RegisterRequest } from "../models/auth/register-request";
-import { TokenService } from "./token.service";
-import { User } from "../models/auth/user";
+import { TokenService } from "../../../core/services/token.service";
+import { LoginRequest } from "../models/login-request";
+import { RegisterRequest } from "../models/register-request";
+import { User } from "../models/user";
+
 
 @Injectable({
   providedIn: "root",

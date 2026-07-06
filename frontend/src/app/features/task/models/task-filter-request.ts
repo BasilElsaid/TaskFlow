@@ -1,5 +1,5 @@
-import { TaskPriority } from "../../enums/task-priority-enum";
-import { TaskStatus } from "../../enums/task-status-enum";
+import { TaskPriority } from "../../../features/task/enums/task-priority-enum";
+import { TaskStatus } from "../../../features/task/enums/task-status-enum";
 
 export interface TaskFilterRequest {
   taskStatus?: TaskStatus;

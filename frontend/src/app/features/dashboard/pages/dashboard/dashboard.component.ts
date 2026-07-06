@@ -1,8 +1,9 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { ProjectService } from "../../core/services/project.service";
-import { TaskService } from "../../core/services/task.service";
+import { ProjectService } from "../../../project/services/project.service";
+import { TaskService } from "../../../task/services/task.service";
+
 
 @Component({
   selector: "app-dashboard",

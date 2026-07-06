@@ -1,4 +1,4 @@
-import { TaskPriority } from "../../enums/task-priority-enum";
+import { TaskPriority } from "../../../features/task/enums/task-priority-enum";
 
 export interface CreateTaskRequest {
   title: string;

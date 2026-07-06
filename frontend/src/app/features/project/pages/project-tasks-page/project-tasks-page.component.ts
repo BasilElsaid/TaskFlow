@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ActivatedRoute, RouterModule } from "@angular/router";
-import { TaskService } from "../../../core/services/task.service";
+import { TaskService } from "../../../task/services/task.service";
 
 
 @Component({

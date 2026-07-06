@@ -1,10 +1,11 @@
 import { Injectable, inject } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { CreateTaskRequest } from "../models/task/create-task-request";
-import { Task } from "../models/task/task";
-import { TaskFilterRequest } from "../models/task/task-filter-request";
-import { UpdateTaskRequest } from "../models/task/update-task-request";
+import { CreateTaskRequest } from "../models/create-task-request";
+import { Task } from "../models/task";
+import { TaskFilterRequest } from "../models/task-filter-request";
+import { UpdateTaskRequest } from "../models/update-task-request";
+
 
 @Injectable({
   providedIn: "root",
