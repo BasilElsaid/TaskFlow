@@ -1,10 +1,10 @@
 import { Injectable, inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, map, Observable, tap } from "rxjs";
-import { LoginRequest } from "../models/login-request";
-import { RegisterRequest } from "../models/register-request";
-import { UserResponse } from "../models/user-response";
+import { LoginRequest } from "../models/auth/login-request";
+import { RegisterRequest } from "../models/auth/register-request";
 import { TokenService } from "./token.service";
+import { User } from "../models/auth/user";
 
 @Injectable({
   providedIn: "root",
@@ -29,8 +29,8 @@ export class AuthService {
     );
   }
 
-  register(request: RegisterRequest): Observable<UserResponse> {
-    return this.http.post<UserResponse>(`${this.api}/register`, request);
+  register(request: RegisterRequest): Observable<User> {
+    return this.http.post<User>(`${this.api}/register`, request);
   }
 
   logout() {

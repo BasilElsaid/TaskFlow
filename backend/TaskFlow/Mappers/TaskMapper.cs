@@ -35,7 +35,6 @@ public static class TaskMapper
             Description = request.Description ?? string.Empty,
             TaskPriority = request.TaskPriority,
             CreatedAt = DateTime.UtcNow,
-            ProjectId = request.ProjectId,
             AssignedUserId = request.AssignedUserId,
             TaskStatus = Enums.TaskStatus.Todo,
         };

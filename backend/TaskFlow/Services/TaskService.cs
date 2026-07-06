@@ -39,9 +39,9 @@ public class TaskService : ITaskService
         return TaskMapper.ToResponse(task);
     }
 
-    public async Task<TaskResponse?> Create(CreateTaskRequest request, string userId)
+    public async Task<TaskResponse?> Create(int projectId, CreateTaskRequest request, string userId)
     {
-        var project = await _projectRepo.GetByIdAsync(request.ProjectId, userId);
+        var project = await _projectRepo.GetByIdAsync(projectId, userId);
 
         if (project == null)
         {
@@ -49,6 +49,8 @@ public class TaskService : ITaskService
         }
         
         var task = TaskMapper.ToEntity(request);
+        
+        task.ProjectId = projectId;
         
         await _taskRepo.AddAsync(task);
         await _taskRepo.SaveChangesAsync();

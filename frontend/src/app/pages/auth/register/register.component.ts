@@ -2,7 +2,7 @@ import { Component, inject } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, RouterModule } from "@angular/router";
 import { AuthService } from "../../../core/services/auth.service";
-import { RegisterRequest } from "../../../core/models/register-request";
+import { RegisterRequest } from "../../../core/models/auth/register-request";
 import { TokenService } from "../../../core/services/token.service";
 import { CommonModule } from "@angular/common";
 

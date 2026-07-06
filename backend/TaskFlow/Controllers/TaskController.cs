@@ -17,19 +17,6 @@ public class TaskController : ControllerBase
     {
         _taskService = taskService;
     }
-
-    [HttpGet("projects/{projectId}")]
-    public async Task<IActionResult> GetByProject(int projectId, [FromQuery] TaskFilterRequest filter)
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var tasks = await _taskService.GetByProject(projectId, userId, filter);
-
-        if (tasks is null)
-        {
-            return NotFound("Project or Tasks not found");
-        }
-        return Ok(tasks);
-    }
     
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
@@ -43,20 +30,6 @@ public class TaskController : ControllerBase
         }
         
         return Ok(task);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateTaskRequest request)
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var task = await _taskService.Create(request, userId!);
-
-        if (task is null)
-        {
-            return BadRequest("Project not found");
-        }
-        
-        return CreatedAtAction(nameof(GetById), new { id = task.Id }, task);
     }
 
     [HttpPut("{id}")]

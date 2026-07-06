@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskFlow.Dtos.Requests.Project;
+using TaskFlow.Dtos.Requests.Task;
 using TaskFlow.Interfaces;
 using TaskFlow.Models;
 
@@ -76,5 +77,40 @@ public class ProjectsController : ControllerBase
         }
         
         return NoContent();
+    }
+    
+    [HttpGet("{projectId}/tasks")]
+    public async Task<IActionResult> GetTasks(
+        int projectId,
+        [FromQuery] TaskFilterRequest filter,
+        [FromServices] ITaskService taskService)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var tasks = await taskService.GetByProject(projectId, userId!, filter);
+
+        return Ok(tasks);
+    }
+    
+    [HttpPost("{projectId}/tasks")]
+    public async Task<IActionResult> CreateTask(
+        int projectId,
+        [FromBody] CreateTaskRequest request,
+        [FromServices] ITaskService taskService)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
+        var task = await taskService.Create(projectId, request, userId!);
+
+        if (task == null)
+        {
+            return BadRequest("Project not found");
+        }
+
+        return CreatedAtAction(
+            nameof(TaskController.GetById),
+            "Task",
+            new { id = task.Id },
+            task);
     }
 }

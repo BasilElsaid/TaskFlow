@@ -4,7 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, RouterModule } from "@angular/router";
 import { AuthService } from "../../../core/services/auth.service";
 import { TokenService } from "../../../core/services/token.service";
-import { LoginRequest } from "../../../core/models/login-request";
+import { LoginRequest } from "../../../core/models/auth/login-request";
 
 @Component({
   selector: "app-login",

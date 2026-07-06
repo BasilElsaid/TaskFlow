@@ -8,6 +8,5 @@ public class CreateTaskRequest
     public string Description { get; set; } = string.Empty;
     public TaskPriority TaskPriority { get; set; }
     public DateTime? DueDate { get; set; }
-    public int ProjectId { get; set; }
     public string? AssignedUserId { get; set; }
 }

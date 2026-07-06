@@ -15,9 +15,6 @@ public class CreateTaskRequestValidator : AbstractValidator<CreateTaskRequest>
             .NotEmpty()
             .MaximumLength(500);
         
-        RuleFor(x => x.ProjectId)
-            .GreaterThan(0);
-        
         RuleFor(x => x.DueDate)
             .GreaterThan(DateTime.UtcNow)
             .When(x => x.DueDate.HasValue);
