@@ -1,87 +1,110 @@
-<div class="max-w-7xl mx-auto px-6 py-10">
-  <!-- HEADER -->
+<div
+  class="min-h-screen bg-gray-50 flex items-center justify-center px-6 py-10"
+>
   <div
-    class="flex flex-col md:flex-row md:items-center md:justify-between gap-6"
+    class="w-full max-w-6xl bg-white border border-gray-200 rounded-2xl shadow-sm p-8"
   >
-    <div>
-      <h1 class="text-3xl font-semibold">Bentornato!</h1>
-      <p class="text-gray-500 mt-2">Ecco una panoramica del tuo lavoro</p>
-    </div>
-
-    <a
-      routerLink="/projects"
-      class="bg-black text-white px-5 py-3 rounded-lg hover:bg-gray-800 transition"
+    <!-- HEADER -->
+    <div
+      class="flex flex-col md:flex-row md:items-center md:justify-between gap-6"
     >
-      + Nuovo progetto
-    </a>
-  </div>
+      <div>
+        <h1 class="text-3xl font-semibold">Bentornato!</h1>
+        <p class="text-gray-500 mt-2">Ecco una panoramica del tuo lavoro</p>
+      </div>
 
-  <!-- STATS -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
-    <div class="bg-white border rounded-xl p-6">
-      <p class="text-gray-500 text-sm">Progetti</p>
-      <h2 class="text-3xl font-semibold mt-2">{{ stats.projects }}</h2>
-    </div>
-
-    <div class="bg-white border rounded-xl p-6">
-      <p class="text-gray-500 text-sm">Task totali</p>
-      <h2 class="text-3xl font-semibold mt-2">{{ stats.tasks }}</h2>
-    </div>
-
-    <div class="bg-white border rounded-xl p-6">
-      <p class="text-gray-500 text-sm">Completate</p>
-      <h2 class="text-3xl font-semibold mt-2">{{ stats.completed }}</h2>
-    </div>
-
-    <div class="bg-white border rounded-xl p-6">
-      <p class="text-gray-500 text-sm">In scadenza</p>
-      <h2 class="text-3xl font-semibold mt-2">{{ stats.dueSoon }}</h2>
-    </div>
-  </div>
-
-  <!-- PROGETTI -->
-  <div class="mt-14">
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-semibold">I tuoi progetti</h2>
-
-      <a routerLink="/projects" class="text-sm hover:underline"> Vedi tutti </a>
-    </div>
-
-    <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-      <div
-        *ngFor="let project of projects"
-        class="bg-white border rounded-xl p-6 hover:shadow-sm transition"
+      <a
+        routerLink="/dashboard/projects"
+        class="bg-black text-white px-5 py-3 rounded-lg hover:bg-gray-800 transition"
       >
-        <div class="flex justify-between items-center">
-          <h3 class="font-semibold text-lg">
-            {{ project.name }}
-          </h3>
+        + Nuovo progetto
+      </a>
+    </div>
 
-          <span class="text-xs bg-gray-100 px-3 py-1 rounded-full">
-            attivo
-          </span>
-        </div>
+    <!-- STATS -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+      <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+        <p class="text-gray-500 text-sm">Progetti</p>
+        <h2 class="text-3xl font-semibold mt-2">{{ stats.projects }}</h2>
+      </div>
 
-        <p class="text-gray-500 mt-3 text-sm">
-          {{ project.description }}
-        </p>
+      <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+        <p class="text-gray-500 text-sm">Task totali</p>
+        <h2 class="text-3xl font-semibold mt-2">{{ stats.tasks }}</h2>
+      </div>
 
-        <div class="mt-6 flex justify-between text-sm text-gray-500">
-          <span>{{ project.taskCount }} task</span>
-          <span>{{ project.progress }}%</span>
+      <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+        <p class="text-gray-500 text-sm">Completate</p>
+        <h2 class="text-3xl font-semibold mt-2">{{ stats.completed }}</h2>
+      </div>
+
+      <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+        <p class="text-gray-500 text-sm">In scadenza</p>
+        <h2 class="text-3xl font-semibold mt-2">{{ stats.dueSoon }}</h2>
+      </div>
+    </div>
+
+    <!-- PROGETTI -->
+    <div class="mt-14">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-semibold">I tuoi progetti</h2>
+
+        <a
+          routerLink="/dashboard/projects"
+          class="text-sm text-gray-600 hover:underline"
+        >
+          Vedi tutti
+        </a>
+      </div>
+
+      <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div
+          *ngFor="let project of projects"
+          class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition"
+        >
+          <h3 class="font-semibold text-lg">{{ project.name }}</h3>
+
+          <p class="text-gray-500 mt-3 text-sm">
+            {{ project.description }}
+          </p>
+
+          <div class="mt-6 flex justify-between text-sm text-gray-500">
+            <span>{{ project.taskCount }} task</span>
+            <span>{{ project.progress }}%</span>
+          </div>
+
+          <div class="mt-5 flex gap-2">
+            <a
+              [routerLink]="['/dashboard/projects', project.id, 'tasks']"
+              class="px-3 py-2 text-sm border border-gray-200 rounded-lg hover:bg-gray-50"
+            >
+              Visualizza task
+            </a>
+
+            <button
+              class="px-3 py-2 text-sm bg-black text-white rounded-lg hover:bg-gray-800"
+            >
+              Stato
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- ATTIVITÀ -->
-  <div class="mt-14">
-    <h2 class="text-2xl font-semibold mb-6">Attività recenti</h2>
+    <!-- ATTIVITÀ -->
+    <div class="mt-14">
+      <h2 class="text-2xl font-semibold mb-6">Attività recenti</h2>
 
-    <div class="bg-white border rounded-xl divide-y">
-      <div *ngFor="let activity of activities" class="p-5 flex justify-between">
-        <span>{{ activity.text }}</span>
-        <span class="text-gray-400 text-sm">{{ activity.time }}</span>
+      <div
+        class="bg-white border border-gray-200 rounded-xl shadow-sm divide-y divide-gray-100"
+      >
+        <div
+          *ngFor="let activity of activities"
+          class="p-5 flex justify-between"
+        >
+          <span class="text-gray-700">{{ activity.text }}</span>
+          <span class="text-gray-400 text-sm">{{ activity.time }}</span>
+        </div>
       </div>
     </div>
   </div>
