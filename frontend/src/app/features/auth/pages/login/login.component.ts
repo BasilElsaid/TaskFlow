@@ -5,11 +5,12 @@ import { Router, RouterModule } from "@angular/router";
 import { TokenService } from "../../../../core/services/token.service";
 import { LoginRequest } from "../../models/login-request";
 import { AuthService } from "../../services/auth.service";
+import { AuthCardComponent } from "../../components/auth-card/auth-card.component";
 
 
 @Component({
   selector: "app-login",
-  imports: [RouterModule, CommonModule, ReactiveFormsModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, AuthCardComponent],
   templateUrl: "./login.component.html",
   styleUrl: "./login.component.css",
 })
