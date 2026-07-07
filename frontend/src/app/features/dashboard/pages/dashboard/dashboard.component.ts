@@ -3,17 +3,26 @@ import { Component, inject } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { ProjectService } from "../../../project/services/project.service";
 import { TaskService } from "../../../task/services/task.service";
-
+import { ProjectFormModalComponent } from "../../../project/components/project-form-modal/project-form-modal.component";
+import { ProjectCardComponent } from "../../../project/components/project-card/project-card.component";
+import { Project } from "../../../project/models/project";
 
 @Component({
   selector: "app-dashboard",
-  imports: [RouterModule, CommonModule],
+  imports: [
+    RouterModule,
+    CommonModule,
+    ProjectFormModalComponent,
+    ProjectCardComponent,
+  ],
   templateUrl: "./dashboard.component.html",
   styleUrl: "./dashboard.component.css",
 })
 export class DashboardComponent {
   private projectService = inject(ProjectService);
   private taskService = inject(TaskService);
+  showProjectModal = false;
+  selectedProject?: Project;
 
   stats = {
     projects: 0,
@@ -29,7 +38,7 @@ export class DashboardComponent {
     this.loadDashboard();
   }
 
-  private loadDashboard() {
+  loadDashboard() {
     this.projectService.getProjects().subscribe((projects) => {
       this.projects = projects;
 
@@ -72,5 +81,30 @@ export class DashboardComponent {
 
       return diff <= 3 && diff >= 0;
     }).length;
+  }
+
+  openEditModal(project: Project) {
+    this.selectedProject = project;
+    this.showProjectModal = true;
+  }
+
+  deleteProject(id: number) {
+    if (!confirm("Sei sicuro di eliminare il progetto?")) return;
+
+    this.projectService.deleteProject(id).subscribe(() => {
+      this.projects = this.projects.filter((p) => p.id !== id);
+
+      this.stats.projects = this.projects.length;
+    });
+  }
+
+  openCreateModal() {
+    this.selectedProject = undefined;
+    this.showProjectModal = true;
+  }
+
+  closeProjectModal() {
+    this.selectedProject = undefined;
+    this.showProjectModal = false;
   }
 }

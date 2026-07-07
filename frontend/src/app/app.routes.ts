@@ -4,9 +4,8 @@ import { LoginComponent } from "./features/auth/pages/login/login.component";
 import { RegisterComponent } from "./features/auth/pages/register/register.component";
 import { DashboardComponent } from "./features/dashboard/pages/dashboard/dashboard.component";
 import { HomeComponent } from "./features/home/pages/home/home.component";
-import { ProjectTasksPageComponent } from "./features/project/pages/project-tasks-page/project-tasks-page.component";
-import { ProjectsPageComponent } from "./features/project/pages/projects-page/projects-page.component";
-
+import { ProjectListComponent } from "./features/project/pages/project-list/project-list.component";
+import { ProjectDetailsComponent } from "./features/project/pages/project-details/project-details.component";
 
 export const routes: Routes = [
   {
@@ -36,11 +35,11 @@ export const routes: Routes = [
       },
       {
         path: "projects",
-        component: ProjectsPageComponent,
+        component: ProjectListComponent,
       },
       {
-        path: "projects/:id/tasks",
-        component: ProjectTasksPageComponent,
+        path: "projects/:id",
+        component: ProjectDetailsComponent,
       },
     ],
   },

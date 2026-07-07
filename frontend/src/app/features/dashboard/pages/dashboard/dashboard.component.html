@@ -13,12 +13,12 @@
         <p class="text-gray-500 mt-2">Ecco una panoramica del tuo lavoro</p>
       </div>
 
-      <a
-        routerLink="/dashboard/projects"
+      <button
+        (click)="openCreateModal()"
         class="bg-black text-white px-5 py-3 rounded-lg hover:bg-gray-800 transition"
       >
         + Nuovo progetto
-      </a>
+      </button>
     </div>
 
     <!-- STATS -->
@@ -58,36 +58,13 @@
       </div>
 
       <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-        <div
+        <app-project-card
           *ngFor="let project of projects"
-          class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition"
+          [project]="project"
+          (edit)="openEditModal($event)"
+          (delete)="deleteProject($event)"
         >
-          <h3 class="font-semibold text-lg">{{ project.name }}</h3>
-
-          <p class="text-gray-500 mt-3 text-sm">
-            {{ project.description }}
-          </p>
-
-          <div class="mt-6 flex justify-between text-sm text-gray-500">
-            <span>{{ project.taskCount }} task</span>
-            <span>{{ project.progress }}%</span>
-          </div>
-
-          <div class="mt-5 flex gap-2">
-            <a
-              [routerLink]="['/dashboard/projects', project.id, 'tasks']"
-              class="px-3 py-2 text-sm border border-gray-200 rounded-lg hover:bg-gray-50"
-            >
-              Visualizza task
-            </a>
-
-            <button
-              class="px-3 py-2 text-sm bg-black text-white rounded-lg hover:bg-gray-800"
-            >
-              Stato
-            </button>
-          </div>
-        </div>
+        </app-project-card>
       </div>
     </div>
 
@@ -109,3 +86,16 @@
     </div>
   </div>
 </div>
+<app-project-form-modal
+  *ngIf="showProjectModal"
+  [project]="selectedProject"
+  [title]="selectedProject ? 'Modifica progetto' : 'Nuovo progetto'"
+  [subtitle]="
+    selectedProject
+      ? 'Aggiorna le informazioni del progetto.'
+      : 'Crea un nuovo progetto per iniziare ad organizzare le tue attività.'
+  "
+  (close)="closeProjectModal()"
+  (saved)="loadDashboard()"
+>
+</app-project-form-modal>
