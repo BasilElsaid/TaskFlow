@@ -4,12 +4,12 @@ import { Router, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { TokenService } from "../../../../core/services/token.service";
 import { AuthService } from "../../services/auth.service";
-import { AuthCardComponent } from "../../components/auth-card/auth-card.component";
+import { AuthFormModalComponent } from "../../components/auth-form-modal/auth-form-modal.component";
 
 @Component({
   selector: "app-register",
   standalone: true,
-  imports: [RouterModule, ReactiveFormsModule, CommonModule, AuthCardComponent],
+  imports: [RouterModule, ReactiveFormsModule, CommonModule, AuthFormModalComponent],
   templateUrl: "./register.component.html",
   styleUrl: "./register.component.css",
 })

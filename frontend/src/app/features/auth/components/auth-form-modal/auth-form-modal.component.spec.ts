@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthCardComponent } from './auth-card.component';
+import { AuthFormModalComponent } from './auth-form-modal.component';
 
-describe('AuthCardComponent', () => {
-  let component: AuthCardComponent;
-  let fixture: ComponentFixture<AuthCardComponent>;
+describe('AuthFormModalComponent', () => {
+  let component: AuthFormModalComponent;
+  let fixture: ComponentFixture<AuthFormModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AuthCardComponent]
+      imports: [AuthFormModalComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AuthCardComponent);
+    fixture = TestBed.createComponent(AuthFormModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
