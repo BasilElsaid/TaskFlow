@@ -48,3 +48,16 @@
     </div>
   </div>
 </div>
+<app-project-form-modal
+  *ngIf="showProjectModal"
+  [project]="selectedProject"
+  [title]="selectedProject ? 'Modifica progetto' : 'Nuovo progetto'"
+  [subtitle]="
+    selectedProject
+      ? 'Aggiorna le informazioni del progetto.'
+      : 'Crea un nuovo progetto.'
+  "
+  (close)="closeProjectModal()"
+  (saved)="loadProjects()"
+>
+</app-project-form-modal>

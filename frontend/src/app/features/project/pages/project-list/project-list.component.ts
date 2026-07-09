@@ -4,17 +4,27 @@ import { RouterModule } from "@angular/router";
 import { ProjectService } from "../../services/project.service";
 import { Project } from "../../models/project";
 import { ProjectCardComponent } from "../../components/project-card/project-card.component";
+import { ProjectFormModalComponent } from "../../components/project-form-modal/project-form-modal.component";
 
 @Component({
   selector: "app-project-list",
-  imports: [CommonModule, RouterModule, ProjectCardComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ProjectCardComponent,
+    ProjectFormModalComponent,
+  ],
   templateUrl: "./project-list.component.html",
   styleUrl: "./project-list.component.css",
 })
 export class ProjectListComponent {
   private projectService = inject(ProjectService);
 
-  projects: any[] = [];
+  projects: Project[] = [];
+
+  showProjectModal = false;
+
+  selectedProject?: Project;
 
   ngOnInit() {
     this.loadProjects();
@@ -27,7 +37,21 @@ export class ProjectListComponent {
   }
 
   openEditModal(project: Project) {
-    console.log("modifica", project);
+    this.selectedProject = project;
+
+    this.showProjectModal = true;
+  }
+
+  openCreateModal() {
+    this.selectedProject = undefined;
+
+    this.showProjectModal = true;
+  }
+
+  closeProjectModal() {
+    this.selectedProject = undefined;
+
+    this.showProjectModal = false;
   }
 
   deleteProject(id: number) {
