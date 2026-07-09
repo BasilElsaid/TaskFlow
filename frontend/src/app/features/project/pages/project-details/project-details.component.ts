@@ -16,7 +16,7 @@ import { TaskDetailsModalComponent } from "../../../task/components/task-details
     CommonModule,
     TaskFormModalComponent,
     TaskCardComponent,
-    TaskDetailsModalComponent
+    TaskDetailsModalComponent,
   ],
   templateUrl: "./project-details.component.html",
   styleUrl: "./project-details.component.css",
@@ -96,5 +96,17 @@ export class ProjectDetailsComponent {
   closeTaskDetails() {
     this.selectedTask = undefined;
     this.showTaskDetails = false;
+  }
+
+  get completedTasks(): number {
+    return this.tasks.filter((t) => t.taskStatus === 2).length;
+  }
+
+  get inProgressTasks(): number {
+    return this.tasks.filter((t) => t.taskStatus === 1).length;
+  }
+
+  get todoTasks(): number {
+    return this.tasks.filter((t) => t.taskStatus === 0).length;
   }
 }

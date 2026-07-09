@@ -1,7 +1,9 @@
 <div
   class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4"
 >
-  <div class="w-full max-w-lg bg-white rounded-2xl shadow-sm p-8">
+  <div
+    class="w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-sm p-8"
+  >
     <!-- HEADER -->
     <div class="flex justify-between items-start">
       <div>
@@ -23,6 +25,43 @@
 
         <p class="mt-1">
           {{ task?.description || "Nessuna descrizione" }}
+        </p>
+      </div>
+
+      <!-- ID -->
+      <div class="border rounded-xl p-4">
+        <p class="text-sm text-gray-500">ID Task</p>
+
+        <p class="mt-2 font-medium">#{{ task?.id }}</p>
+      </div>
+
+      <!-- CREATED + PROJECT -->
+      <div class="grid grid-cols-2 gap-4">
+        <div class="border rounded-xl p-4">
+          <p class="text-sm text-gray-500">Creato il</p>
+
+          <p class="mt-2 font-medium">
+            {{
+              task?.createdAt
+                ? (task?.createdAt | date: "dd/MM/yyyy")
+                : "Non disponibile"
+            }}
+          </p>
+        </div>
+
+        <div class="border rounded-xl p-4">
+          <p class="text-sm text-gray-500">Progetto ID</p>
+
+          <p class="mt-2 font-medium">#{{ task?.projectId }}</p>
+        </div>
+      </div>
+
+      <!-- ASSIGNED USER -->
+      <div class="border rounded-xl p-4">
+        <p class="text-sm text-gray-500">Assegnato a</p>
+
+        <p class="mt-2 font-medium">
+          {{ task?.assignedUserId || "Non assegnato" }}
         </p>
       </div>
 
@@ -48,11 +87,7 @@
         <p class="text-sm text-gray-500">Scadenza</p>
 
         <p class="mt-2 font-medium">
-          {{
-            task?.dueDate
-              ? (task?.dueDate | date: "dd/MM/yyyy")
-              : "Scaduto"
-          }}
+          {{ task?.dueDate ? (task?.dueDate | date: "dd/MM/yyyy") : "Scaduto" }}
         </p>
       </div>
     </div>

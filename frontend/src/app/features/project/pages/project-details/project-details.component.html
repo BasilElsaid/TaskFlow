@@ -54,27 +54,63 @@
       </div>
 
       <!-- STATS -->
-      <div class="grid md:grid-cols-3 gap-6">
+      <div class="grid md:grid-cols-4 gap-6">
+        <!-- ID -->
         <div class="border border-gray-200 rounded-xl p-5">
-          <p class="text-gray-500 text-sm">Creato</p>
+          <p class="text-gray-500 text-sm">ID Progetto</p>
+
+          <p class="font-medium mt-2">#{{ project.id }}</p>
+        </div>
+
+        <!-- CREATED -->
+        <div class="border border-gray-200 rounded-xl p-5">
+          <p class="text-gray-500 text-sm">Creato il</p>
 
           <p class="font-medium mt-2">
-            {{ project.createdAt | date }}
+            {{ project.createdAt | date: "dd/MM/yyyy" }}
           </p>
         </div>
 
+        <!-- TASK COUNT -->
         <div class="border border-gray-200 rounded-xl p-5">
-          <p class="text-gray-500 text-sm">Task</p>
+          <p class="text-gray-500 text-sm">Task totali</p>
 
           <p class="font-medium mt-2">
             {{ tasks.length }}
           </p>
         </div>
 
+        <!-- STATUS -->
         <div class="border border-gray-200 rounded-xl p-5">
           <p class="text-gray-500 text-sm">Stato</p>
 
           <p class="font-medium mt-2">Attivo</p>
+        </div>
+      </div>
+
+      <div class="mt-8 grid md:grid-cols-3 gap-6">
+        <div class="border rounded-xl p-5">
+          <p class="text-gray-500 text-sm">Da fare</p>
+
+          <p class="text-2xl font-semibold mt-2">
+            {{ todoTasks }}
+          </p>
+        </div>
+
+        <div class="border rounded-xl p-5">
+          <p class="text-gray-500 text-sm">In corso</p>
+
+          <p class="text-2xl font-semibold mt-2">
+            {{ inProgressTasks }}
+          </p>
+        </div>
+
+        <div class="border rounded-xl p-5">
+          <p class="text-gray-500 text-sm">Completati</p>
+
+          <p class="text-2xl font-semibold mt-2">
+            {{ completedTasks }}
+          </p>
         </div>
       </div>
 
