@@ -1,0 +1,69 @@
+<div
+  class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4"
+>
+  <div class="w-full max-w-lg bg-white rounded-2xl shadow-sm p-8">
+    <!-- HEADER -->
+    <div class="flex justify-between items-start">
+      <div>
+        <h2 class="text-3xl font-semibold">
+          {{ task?.title }}
+        </h2>
+      </div>
+
+      <button (click)="close.emit()" class="text-gray-400 hover:text-black">
+        ✕
+      </button>
+    </div>
+
+    <!-- CONTENT -->
+
+    <div class="mt-8 space-y-5">
+      <div>
+        <p class="text-sm text-gray-500">Descrizione</p>
+
+        <p class="mt-1">
+          {{ task?.description || "Nessuna descrizione" }}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="border rounded-xl p-4">
+          <p class="text-sm text-gray-500">Priorità</p>
+
+          <p class="mt-2 font-medium">
+            {{ taskPriority[task?.taskPriority!] }}
+          </p>
+        </div>
+
+        <div class="border rounded-xl p-4">
+          <p class="text-sm text-gray-500">Stato</p>
+
+          <p class="mt-2 font-medium">
+            {{ taskStatus[task?.taskStatus!] }}
+          </p>
+        </div>
+      </div>
+
+      <div class="border rounded-xl p-4">
+        <p class="text-sm text-gray-500">Scadenza</p>
+
+        <p class="mt-2 font-medium">
+          {{
+            task?.dueDate
+              ? (task?.dueDate | date: "dd/MM/yyyy")
+              : "Scaduto"
+          }}
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <button
+        (click)="close.emit()"
+        class="w-full bg-black text-white py-3 rounded-lg"
+      >
+        Chiudi
+      </button>
+    </div>
+  </div>
+</div>

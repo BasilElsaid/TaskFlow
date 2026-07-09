@@ -1,0 +1,109 @@
+<!-- BACKDROP -->
+<div
+  class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4"
+>
+  <!-- MODAL -->
+  <div
+    class="w-full max-w-md bg-white border border-gray-200 rounded-2xl p-8 shadow-sm"
+  >
+    <!-- HEADER -->
+    <h2 class="text-3xl font-semibold">
+      {{ title }}
+    </h2>
+
+    <p class="mt-2 text-gray-500">
+      {{ subtitle }}
+    </p>
+
+    <!-- FORM -->
+    <form [formGroup]="taskForm" (ngSubmit)="saveTask()" class="mt-8 space-y-5">
+      <!-- TITLE -->
+      <div>
+        <label class="block text-sm font-medium mb-2"> Titolo task </label>
+
+        <input
+          type="text"
+          formControlName="title"
+          placeholder="Es. Creare pagina login"
+          class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+        />
+
+        <p
+          *ngIf="
+            taskForm.controls.title.touched && taskForm.controls.title.invalid
+          "
+          class="text-red-500 text-sm mt-1"
+        >
+          Inserisci un titolo.
+        </p>
+      </div>
+
+      <!-- DESCRIPTION -->
+      <div>
+        <label class="block text-sm font-medium mb-2"> Descrizione </label>
+
+        <textarea
+          rows="4"
+          formControlName="description"
+          placeholder="Descrivi il task..."
+          class="w-full rounded-lg border border-gray-300 px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-black"
+        ></textarea>
+      </div>
+
+      <!-- PRIORITY -->
+      <div>
+        <label class="block text-sm text-gray-500 mb-2"> Priorità </label>
+
+        <select
+          formControlName="taskPriority"
+          class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+        >
+          <option [ngValue]="TaskPriority.Low">Low</option>
+
+          <option [ngValue]="TaskPriority.Normal">Normal</option>
+
+          <option [ngValue]="TaskPriority.High">High</option>
+        </select>
+      </div>
+
+      <!-- DATE -->
+      <div>
+        <label class="block text-sm font-medium mb-2"> Scadenza </label>
+
+        <input
+          type="date"
+          formControlName="dueDate"
+          class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+        />
+      </div>
+
+      <!-- BUTTONS -->
+      <div class="flex gap-3 pt-2">
+        <button
+          type="button"
+          (click)="closeModal()"
+          class="flex-1 border border-gray-300 py-3 rounded-lg hover:bg-gray-100 transition"
+        >
+          Annulla
+        </button>
+
+        <button
+          type="submit"
+          [disabled]="loading"
+          class="flex-1 bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition disabled:opacity-50"
+        >
+          {{ loading ? "In corso..." : "Salva" }}
+        </button>
+      </div>
+    </form>
+
+    <!-- ERROR -->
+    <div *ngIf="errorMessage" class="mt-4 text-center">
+      <div
+        class="inline-block bg-red-50 border border-red-200 text-red-600 px-4 py-2 rounded-lg"
+      >
+        {{ errorMessage }}
+      </div>
+    </div>
+  </div>
+</div>

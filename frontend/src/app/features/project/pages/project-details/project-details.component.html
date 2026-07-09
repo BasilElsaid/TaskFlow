@@ -32,19 +32,29 @@
     <!-- PROJECT INFO -->
     <div *ngIf="project">
       <!-- HEADER -->
-      <div class="mb-8">
-        <h1 class="text-3xl font-semibold">
-          {{ project.name }}
-        </h1>
+      <div
+        class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8"
+      >
+        <div>
+          <h1 class="text-3xl font-semibold">
+            {{ project.name }}
+          </h1>
 
-        <p class="text-gray-500 mt-3">
-          {{ project.description }}
-        </p>
+          <p class="text-gray-500 mt-3">
+            {{ project.description }}
+          </p>
+        </div>
+
+        <button
+          (click)="openCreateModal()"
+          class="bg-black text-white px-5 py-3 rounded-lg hover:bg-gray-800 transition"
+        >
+          + Nuovo Task
+        </button>
       </div>
 
       <!-- STATS -->
       <div class="grid md:grid-cols-3 gap-6">
-        <!-- CREATED -->
         <div class="border border-gray-200 rounded-xl p-5">
           <p class="text-gray-500 text-sm">Creato</p>
 
@@ -53,7 +63,6 @@
           </p>
         </div>
 
-        <!-- TASK COUNT -->
         <div class="border border-gray-200 rounded-xl p-5">
           <p class="text-gray-500 text-sm">Task</p>
 
@@ -62,7 +71,6 @@
           </p>
         </div>
 
-        <!-- STATUS -->
         <div class="border border-gray-200 rounded-xl p-5">
           <p class="text-gray-500 text-sm">Stato</p>
 
@@ -70,7 +78,7 @@
         </div>
       </div>
 
-      <!-- TASK PREVIEW -->
+      <!-- TASK LIST -->
       <div class="mt-12">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-2xl font-semibold">Task del progetto</h2>
@@ -79,38 +87,51 @@
         </div>
 
         <div
-          class="bg-white border border-gray-200 rounded-xl shadow-sm divide-y divide-gray-100"
+          *ngIf="tasks.length > 0"
+          class="grid md:grid-cols-2 xl:grid-cols-3 gap-6"
         >
-          <!-- TASK ITEM -->
-          <div
+          <app-task-card
             *ngFor="let task of tasks"
-            class="p-5 flex items-center justify-between"
+            [task]="task"
+            (details)="openTaskDetails($event)"
+            (edit)="openEditModal($event)"
+            (delete)="deleteTask($event)"
           >
-            <!-- LEFT -->
-            <div>
-              <p class="font-medium text-gray-900">
-                {{ task.title }}
-              </p>
+          </app-task-card>
+        </div>
 
-              <p class="text-sm text-gray-500 mt-1">
-                {{ task.description }}
-              </p>
-            </div>
-
-            <!-- STATUS -->
-            <span
-              class="text-xs px-3 py-1 rounded-full bg-gray-100 text-gray-600"
-            >
-              {{ task.taskStatus }}
-            </span>
-          </div>
-
-          <!-- EMPTY -->
-          <div *ngIf="tasks.length === 0" class="p-5 text-sm text-gray-500">
-            Nessun task presente per questo progetto.
-          </div>
+        <!-- EMPTY -->
+        <div
+          *ngIf="tasks.length === 0"
+          class="p-5 text-sm text-gray-500 border rounded-xl"
+        >
+          Nessun task presente per questo progetto.
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- TASK CREATE / EDIT MODAL -->
+<app-task-form-modal
+  *ngIf="showTaskModal && project"
+  [task]="selectedTask"
+  [projectId]="project.id"
+  [title]="selectedTask ? 'Modifica task' : 'Nuovo task'"
+  [subtitle]="
+    selectedTask
+      ? 'Aggiorna le informazioni del task.'
+      : 'Crea un nuovo task per questo progetto.'
+  "
+  (close)="closeTaskModal()"
+  (saved)="loadTasks()"
+>
+</app-task-form-modal>
+
+<!-- TASK DETAILS MODAL -->
+<app-task-details-modal
+  *ngIf="showTaskDetails"
+  [task]="selectedTask"
+  (close)="closeTaskDetails()"
+>
+</app-task-details-modal>

@@ -67,23 +67,6 @@
         </app-project-card>
       </div>
     </div>
-
-    <!-- ATTIVITÀ -->
-    <div class="mt-14">
-      <h2 class="text-2xl font-semibold mb-6">Attività recenti</h2>
-
-      <div
-        class="bg-white border border-gray-200 rounded-xl shadow-sm divide-y divide-gray-100"
-      >
-        <div
-          *ngFor="let activity of activities"
-          class="p-5 flex justify-between"
-        >
-          <span class="text-gray-700">{{ activity.text }}</span>
-          <span class="text-gray-400 text-sm">{{ activity.time }}</span>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 <app-project-form-modal
