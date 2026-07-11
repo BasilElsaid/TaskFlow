@@ -5,15 +5,61 @@
     {{ task.title }}
   </h3>
 
-  <p class="text-gray-500 mt-2 text-sm">
-    {{ task.description }}
+  <!-- DESCRIPTION -->
+
+  <p class="text-gray-500 mt-3 text-sm leading-relaxed line-clamp-3">
+    {{ task.description || "Nessuna descrizione" }}
   </p>
 
-  <div class="mt-5 flex justify-between text-sm text-gray-500">
-    <span>Scadenza</span>
+  <!-- STATUS + PRIORITY -->
 
-    <span>
-      {{ task.dueDate ? (task.dueDate | date: "dd/MM/yyyy") : "Scaduto" }}
+  <div class="mt-5 pt-4 border-t border-gray-100 space-y-3 text-sm">
+    <!-- STATUS -->
+    <div class="flex justify-between items-center">
+      <span class="text-gray-500"> Stato </span>
+
+      <span class="inline-flex items-center gap-2 font-medium">
+        <span
+          class="w-2.5 h-2.5 rounded-full"
+          [ngClass]="{
+            'bg-yellow-500': task.taskStatus === TaskStatus.Todo,
+            'bg-blue-500': task.taskStatus === TaskStatus.InProgress,
+            'bg-green-500': task.taskStatus === TaskStatus.Done,
+          }"
+        ></span>
+
+        {{ getStatusLabel() }}
+      </span>
+    </div>
+
+    <!-- PRIORITY -->
+    <div class="flex justify-between items-center">
+      <span class="text-gray-500"> Priorità </span>
+
+      <span class="inline-flex items-center gap-2 font-medium">
+        <span
+          class="w-2.5 h-2.5 rounded-full"
+          [ngClass]="{
+            'bg-gray-400': task.taskPriority === TaskPriority.Low,
+            'bg-orange-400': task.taskPriority === TaskPriority.Normal,
+            'bg-red-500': task.taskPriority === TaskPriority.High,
+          }"
+        ></span>
+
+        {{ getPriorityLabel() }}
+      </span>
+    </div>
+  </div>
+
+  <!-- DATE -->
+
+  <div class="mt-5 flex justify-between items-center text-sm">
+    <span class="text-gray-500"> Scadenza </span>
+
+    <span
+      class="px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 font-medium"
+    >
+      {{ task.dueDate ? (task.dueDate | date: "dd/MM/yyyy") : "Nessuna" }}
     </span>
   </div>
 
@@ -29,7 +75,7 @@
       (click)="edit.emit(task)"
       class="px-3 py-2 text-sm bg-black text-white rounded-lg hover:bg-gray-800 transition"
     >
-      Modifica
+      Aggiorna
     </button>
 
     <button

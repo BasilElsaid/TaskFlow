@@ -6,6 +6,7 @@ import { Task } from "../../models/task";
 import { TaskPriority } from "../../enums/task-priority-enum";
 import { UpdateTaskRequest } from "../../models/update-task-request";
 import { CreateTaskRequest } from "../../models/create-task-request";
+import { TaskStatus } from "../../enums/task-status-enum";
 
 @Component({
   selector: "app-task-form-modal",
@@ -29,11 +30,13 @@ export class TaskFormModalComponent {
 
   // espongo l'enum al template
   TaskPriority = TaskPriority;
+  TaskStatus = TaskStatus;
 
   taskForm = this.fb.nonNullable.group({
     title: ["", Validators.required],
     description: [""],
     taskPriority: [TaskPriority.Normal],
+    taskStatus: [TaskStatus.Todo],
     dueDate: [""],
     assignedUserId: [null as string | null],
   });
@@ -47,6 +50,7 @@ export class TaskFormModalComponent {
         title: this.task.title,
         description: this.task.description,
         taskPriority: this.task.taskPriority,
+        taskStatus: this.task.taskStatus,
         dueDate: this.task.dueDate ?? "",
         assignedUserId: this.task.assignedUserId ?? "",
       });
@@ -63,7 +67,16 @@ export class TaskFormModalComponent {
 
     const formValue = this.taskForm.getRawValue();
 
-    const request: CreateTaskRequest = {
+    const updateRequest: UpdateTaskRequest = {
+      title: formValue.title,
+      description: formValue.description,
+      taskStatus: formValue.taskStatus,
+      taskPriority: formValue.taskPriority,
+      dueDate: formValue.dueDate || null,
+      assignedUserId: formValue.assignedUserId || null,
+    };
+
+    const createRequest: CreateTaskRequest = {
       title: formValue.title,
       description: formValue.description,
       taskPriority: formValue.taskPriority,
@@ -72,8 +85,8 @@ export class TaskFormModalComponent {
     };
 
     const operation = this.task
-      ? this.taskService.updateTask(this.task.id, request as UpdateTaskRequest)
-      : this.taskService.createTask(this.projectId, request);
+      ? this.taskService.updateTask(this.task.id, updateRequest)
+      : this.taskService.createTask(this.projectId, createRequest);
 
     operation.subscribe({
       next: () => {

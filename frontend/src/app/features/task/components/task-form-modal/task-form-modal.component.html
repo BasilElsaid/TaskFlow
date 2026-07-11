@@ -66,6 +66,22 @@
         </select>
       </div>
 
+      <!-- STATUS -->
+      <div>
+        <label class="block text-sm text-gray-500 mb-2"> Stato </label>
+
+        <select
+          formControlName="taskStatus"
+          class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+        >
+          <option [ngValue]="TaskStatus.Todo">Da fare</option>
+
+          <option [ngValue]="TaskStatus.InProgress">In corso</option>
+
+          <option [ngValue]="TaskStatus.Done">Completato</option>
+        </select>
+      </div>
+
       <!-- DATE -->
       <div>
         <label class="block text-sm font-medium mb-2"> Scadenza </label>
