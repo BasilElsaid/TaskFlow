@@ -8,12 +8,17 @@ import { TaskFormModalComponent } from "../../../task/components/task-form-modal
 import { TaskCardComponent } from "../../../task/components/task-card/task-card.component";
 import { Task } from "../../../task/models/task";
 import { TaskDetailsModalComponent } from "../../../task/components/task-details-modal/task-details-modal.component";
+import { TaskPriority } from "../../../task/enums/task-priority-enum";
+import { TaskStatus } from "../../../task/enums/task-status-enum";
+import { TaskFilterRequest } from "../../../task/models/task-filter-request";
+import { FormsModule } from "@angular/forms";
 
 @Component({
   selector: "app-project-details",
   imports: [
     RouterModule,
     CommonModule,
+    FormsModule,
     TaskFormModalComponent,
     TaskCardComponent,
     TaskDetailsModalComponent,
@@ -23,20 +28,25 @@ import { TaskDetailsModalComponent } from "../../../task/components/task-details
 })
 export class ProjectDetailsComponent {
   private route = inject(ActivatedRoute);
-
   private projectService = inject(ProjectService);
-
   private taskService = inject(TaskService);
-
   project?: Project;
-
   tasks: Task[] = [];
-
   showTaskModal = false;
-
   selectedTask?: Task;
-
   showTaskDetails = false;
+
+  TaskPriority = TaskPriority;
+  TaskStatus = TaskStatus;
+  showFilters = false;
+
+  filter: TaskFilterRequest = {
+    search: "",
+    taskStatus: null,
+    taskPriority: null,
+    dueBefore: null,
+    assignedToMe: null,
+  };
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get("id"));
@@ -55,7 +65,7 @@ export class ProjectDetailsComponent {
   loadTasks(id?: number) {
     const projectId = id ?? this.project!.id;
 
-    this.taskService.getTasks(projectId).subscribe((tasks) => {
+    this.taskService.getTasks(projectId, this.filter).subscribe((tasks) => {
       this.tasks = tasks;
     });
   }
@@ -108,5 +118,25 @@ export class ProjectDetailsComponent {
 
   get todoTasks(): number {
     return this.tasks.filter((t) => t.taskStatus === 0).length;
+  }
+
+  applyFilters() {
+    this.loadTasks();
+  }
+
+  clearFilters() {
+    this.filter = {
+      search: "",
+      taskStatus: null,
+      taskPriority: null,
+      dueBefore: null,
+      assignedToMe: null,
+    };
+
+    this.loadTasks();
+  }
+
+  toggleFilters() {
+    this.showFilters = !this.showFilters;
   }
 }
