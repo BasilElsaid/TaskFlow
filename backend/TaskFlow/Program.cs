@@ -123,20 +123,26 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// In Docker development the SQL Server volume may be created from scratch.
+// Apply the committed EF Core migrations before accepting API requests.
+using (var scope = app.Services.CreateScope())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await dbContext.Database.MigrateAsync();
 }
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 
 app.UseCors("AllowAngular");
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.Urls.Add("http://0.0.0.0:8080");
 
 app.Run();

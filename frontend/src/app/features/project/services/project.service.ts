@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { CreateProjectRequest } from "../models/create-project-request";
 import { Project } from "../models/project";
 import { UpdateProjectRequest } from "../models/update-project-request";
+import { environment } from "../../../../environments/environment";
 
 
 
@@ -13,7 +14,7 @@ import { UpdateProjectRequest } from "../models/update-project-request";
 export class ProjectService {
   private readonly http = inject(HttpClient);
 
-  private readonly projectsApi = "http://localhost:5271/api/projects";
+  private readonly projectsApi = `${environment.apiUrl}/projects`;
 
   getProjects(): Observable<Project[]> {
     return this.http.get<Project[]>(this.projectsApi);

@@ -5,6 +5,7 @@ import { CreateTaskRequest } from "../models/create-task-request";
 import { Task } from "../models/task";
 import { TaskFilterRequest } from "../models/task-filter-request";
 import { UpdateTaskRequest } from "../models/update-task-request";
+import { environment } from "../../../../environments/environment";
 
 
 @Injectable({
@@ -13,8 +14,8 @@ import { UpdateTaskRequest } from "../models/update-task-request";
 export class TaskService {
   private readonly http = inject(HttpClient);
 
-  private readonly projectApi = "http://localhost:5271/api/projects";
-  private readonly taskApi = "http://localhost:5271/api/tasks";
+  private readonly projectApi = `${environment.apiUrl}/projects`;
+  private readonly taskApi = `${environment.apiUrl}/tasks`;
 
   getTasks(projectId: number, filter?: TaskFilterRequest): Observable<Task[]> {
     let params = new HttpParams();

@@ -1,0 +1,61 @@
+services:
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: taskflow-api
+
+    ports:
+      - "5271:8080"
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=TaskFlow;User Id=sa;Password=${MSSQL_SA_PASSWORD:?Set MSSQL_SA_PASSWORD in .env};TrustServerCertificate=True;"
+      Jwt__Key: "${JWT_KEY:?Set JWT_KEY in .env}"
+
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
+    container_name: taskflow-db
+
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD:?Set MSSQL_SA_PASSWORD in .env}"
+
+    ports:
+      - "1433:1433"
+
+    volumes:
+      - sql_data:/var/opt/mssql
+
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/1433'"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 30s
+
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    container_name: taskflow-frontend
+
+    ports:
+      - "4200:80"
+
+    depends_on:
+      - backend
+
+
+volumes:
+  sql_data:

@@ -5,6 +5,7 @@ import { TokenService } from "../../../core/services/token.service";
 import { LoginRequest } from "../models/login-request";
 import { RegisterRequest } from "../models/register-request";
 import { User } from "../models/user";
+import { environment } from "../../../../environments/environment";
 
 
 @Injectable({
@@ -14,7 +15,7 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly tokenService = inject(TokenService);
 
-  private readonly api = "http://localhost:5271/api/auth";
+  private readonly api = `${environment.apiUrl}/auth`;
 
   private authState = new BehaviorSubject<boolean>(
     this.tokenService.isLoggedIn(),

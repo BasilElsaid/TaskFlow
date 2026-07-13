@@ -2,7 +2,6 @@ import { Component, inject } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
-import { TokenService } from "../../../../core/services/token.service";
 import { AuthService } from "../../services/auth.service";
 import { AuthFormModalComponent } from "../../components/auth-form-modal/auth-form-modal.component";
 
@@ -17,7 +16,6 @@ export class RegisterComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
-  private tokenService = inject(TokenService);
 
   errorMessage: string | null = null;
 
@@ -25,7 +23,7 @@ export class RegisterComponent {
     firstName: ["", Validators.required],
     lastName: ["", Validators.required],
     email: ["", [Validators.required, Validators.email]],
-    password: ["", [Validators.required, Validators.minLength(6)]],
+    password: ["", [Validators.required, Validators.minLength(8)]],
   });
 
   register() {
@@ -45,8 +43,7 @@ export class RegisterComponent {
             password: request.password,
           })
           .subscribe({
-            next: (res) => {
-              this.tokenService.setToken(res.token);
+            next: () => {
               this.router.navigate(["/dashboard"]);
             },
             error: () => {

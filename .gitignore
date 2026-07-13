@@ -5,6 +5,9 @@ appsettings.Development.json
 *.suo
 .vs/
 .DS_Store
+.env
+
+backend/TaskFlow/.idea/
 
 node_modules/
 

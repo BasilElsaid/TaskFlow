@@ -55,9 +55,24 @@ Controller → Service → Repository → DbContext → Database
 
 ---
 
+## Docker
+
+L'applicazione può essere avviata con Docker Compose, includendo frontend Angular, API .NET e SQL Server.
+
+```bash
+cp .env.example .env
+docker compose up --build
+```
+
+Una volta avviata:
+
+- Frontend: `http://localhost:4200`
+- API / Swagger: `http://localhost:5271/swagger`
+
+---
+
 ## Future Improvements
 
-- Docker
 - Pagination
 - Sorting
 - Deploy Cloud
