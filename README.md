@@ -64,6 +64,9 @@ cp .env.example .env
 docker compose up --build
 ```
 
+Il comando `cp .env.example .env` crea il file `.env` locale con le variabili necessarie a Docker.  
+Prima dell’avvio, sostituisci i valori di esempio con una password SQL Server e una chiave JWT sicure.
+
 Una volta avviata:
 
 - Frontend: `http://localhost:4200`
