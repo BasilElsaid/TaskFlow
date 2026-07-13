@@ -1,13 +1,14 @@
-# TaskFlow – Full Stack Task Management System
+# TaskFlow – Personal Task Management System
 
-TaskFlow è una piattaforma full-stack per la gestione di progetti e task, sviluppata con ASP.NET Core e Angular.  
-Il progetto simula un sistema reale di project management con autenticazione JWT, gestione progetti, task e membri.
+TaskFlow è una piattaforma full-stack per la gestione personale di progetti e task.
+
+Permette agli utenti di creare progetti, organizzare attività, monitorare lo stato dei task e gestire le proprie scadenze.
 
 ---
 
 ## Tech Stack
 
-### Backend (in corso)
+### Backend
 - ASP.NET Core Web API (.NET 8)
 - Entity Framework Core
 - SQL Server
@@ -15,66 +16,18 @@ Il progetto simula un sistema reale di project management con autenticazione JWT
 - JWT Authentication
 - Swagger
 
-### Frontend (dopo)
+### Frontend
 - Angular
 - TypeScript
 - Tailwind CSS
 
 ---
 
-## Architettura
+## Architecture
 
-Backend basato su **Layered Architecture**:
+Backend sviluppato con Layered Architecture:
 
-Controllers → Services → Repositories → DbContext → Database
-
-### Struttura progetto
-
-- Controllers  
-- Services  
-- Interfaces  
-- Repositories  
-- DTOs  
-- Models  
-- Data  
-- Authentication  
-- Program.cs  
-
----
-
-## Authentication
-
-Sistema basato su **ASP.NET Core Identity + JWT**
-
-### Features
-- Register user
-- Login user
-- JWT token generation
-- Password hashing
-- Claims-based authentication
-
----
-
-## Core Entities
-
-### User
-- IdentityUser extension
-- FirstName, LastName
-- Owned Projects
-- Assigned Tasks
-
-### Project
-- Name, Description
-- Owner
-- Members (Many-to-Many)
-- Tasks
-
-### TaskItem
-- Title, Description
-- Status (Todo / InProgress / Done)
-- Priority (Low / Medium / High)
-- DueDate
-- Assigned User
+Controller → Service → Repository → DbContext → Database
 
 ---
 
@@ -82,24 +35,29 @@ Sistema basato su **ASP.NET Core Identity + JWT**
 
 ### Authentication
 - Register / Login
-- JWT authentication
+- JWT Authentication
 
 ### Projects
-- Create project
-- Update project
-- Delete project
-- View user projects
+- Creazione progetti
+- Modifica ed eliminazione
+- Visualizzazione progetti personali
 
 ### Tasks
-- CRUD operations
-- Assign user
-- Status & priority management
-- Due date tracking
+- CRUD completo
+- Stato task (Todo, InProgress, Done)
+- Priorità
+- Scadenze
+- Ricerca e filtri
 
-### Planned Features
-- Filtering (status, priority, user, project)
-- Sorting
+### Dashboard
+- Statistiche task
+- Monitoraggio attività
+
+---
+
+## Future Improvements
+
+- Docker
 - Pagination
-- Dashboard stats
-
-...
+- Sorting
+- Deploy Cloud
